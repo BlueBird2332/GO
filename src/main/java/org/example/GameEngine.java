@@ -2,50 +2,56 @@ package org.example;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Objects;
 
 public final class GameEngine {
-    private String[][] board ;
-    private Player currentPlayer = Player.BLACK;
-    public String[][] getBoard() {
-        return board;
+    private Board board ;
+    public void printBoard(){
+        this.board.printBoard();
     }
+    private int whiteCaptured = 0;
+    private int blackCaptured = 0;
 
     {
         initializeBoard();
     }
     public void initializeBoard() {
-        this.board = new String[11][11];
-        for (String[] strings : board) {
-            Arrays.fill(strings, "0");
-        }
+        this.board = new Board(11);
     }
+//    private int performDFSCapturing(String[][] board, int column, int row, String colour){
+//        if (row < 0 || row >= board.length || column < 0 || column >= board[0].length) {
+//            return 0;
+//        }
+//
+//        if (board[row][column] == null || !board[row][column].equals(colour)) {
+//            return 0;
+//        }
+//    }
+//    private int intitializeCapturing(int column, int row, String colour){
+//         return performDFSCapturing(this.board, column + 1, row, colour) +
+//                 performDFSCapturing(this.board, column, row - 1, colour) +
+//                 performDFSCapturing(this.board, column - 1, row, colour) +
+//                 performDFSCapturing(this.board, column, row + 1, colour);
+//
+//    }
 
-    public static void printBoard(String[][] board) {
-        for (String[] strings : board) {
-            for (String string : strings) {
-                System.out.printf("%5s", string);
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
 
 
-    public void makeMove(int column, int row){
+    public void makeMove(int column, int row, Player player){
         if(isMoveAllowed(column, row)){
             //TO DO
             // copy the board
-            if(currentPlayer == Player.BLACK){
-                board[column][row] = "B";
-                currentPlayer = Player.WHITE;
+            if(player == Player.BLACK){
+                board.modifyBoard(column, row, Constants.BLACK);
             } else {
-                board[column][row] = "W";
-                currentPlayer = Player.BLACK;
+                board.modifyBoard(column, row, Constants.WHITE);
             }
         }
     }
+
+
     public boolean isMoveAllowed(int column, int row){
-        if (board[column][row] != "0") {
+        if (!Objects.equals(board.getCellContent(column, row), Constants.EMPTY.value())) {
             System.out.println("cannot make a move");
             return false;
         } else {
