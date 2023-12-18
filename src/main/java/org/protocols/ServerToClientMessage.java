@@ -19,6 +19,6 @@ public class ServerToClientMessage {
     }
     public enum Type{
         MOVE_MADE,
-        PERFORMED_TAKING,
+        MOVE_FAILURE
     }
 }
