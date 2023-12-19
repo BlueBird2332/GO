@@ -16,7 +16,7 @@ public final class GameEngine {
         initializeBoard();
     }
     public void initializeBoard() {
-        this.board = new Board(11);
+        this.board = new Board(19);
     }
 
     public Board getBoard() {
