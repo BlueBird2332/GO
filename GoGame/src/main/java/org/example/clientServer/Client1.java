@@ -98,6 +98,9 @@ public class Client1 implements Runnable {
                 //notification that player 2 joined
                 fromServer.readObject();
                 System.out.println("Player 2 has joined. I start first");
+                System.out.println("Type two numbers to place there your stone");
+                System.out.println("Type -1 -1 to pass");
+                System.out.println("PType -2 -2 to surrender");
 
                 //myTurn = true;
             }
@@ -107,6 +110,9 @@ public class Client1 implements Runnable {
                 otherToken = Constants.BLACK.value();
 
                 System.out.println("Player 2 with token 'W'");
+                System.out.println("Type two numbers to place there your stone");
+                System.out.println("Type -1 -1 to pass");
+                System.out.println("PType -2 -2 to surrender");
                 System.out.println("Waiting for player 1 to move");
             }
 
@@ -180,6 +186,7 @@ public class Client1 implements Runnable {
 
         ServerToClientMessage feedback = (ServerToClientMessage) fromServer.readObject();
         if(feedback.type() == ServerToClientMessage.Type.MOVE_SUCCESFULL) {
+            System.out.println("Waiting for opponent's move");
             return true;
         }
         if(feedback.type() == ServerToClientMessage.Type.MOVE_FAILURE) {
@@ -206,15 +213,15 @@ public class Client1 implements Runnable {
                 }
             }
             else if(message.type() == ServerToClientMessage.Type.MOVE_MADE) {
-                message.board().printBoard();
-                //board.printBoard();
-                System.out.println("My turn");
+                board = message.board();
+                board.printBoard();
+                System.out.println("My turn (" + myToken + ")");
             }
             else if(message.type() == ServerToClientMessage.Type.OTHER_PLAYER_PASSED) {
                 board = message.board();
                 board.printBoard();
                 System.out.println("The opponent passed");
-                System.out.println("My turn");
+                System.out.println("My turn (" + myToken + ")");
             }
         }
         catch (Exception ex) {
