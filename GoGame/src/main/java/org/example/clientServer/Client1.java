@@ -82,7 +82,7 @@ public class Client1 implements Runnable {
     public void run() {
         try {
             //read which player
-            System.out.println("Proba startu");
+            //System.out.println("Proba startu");
             Player player = (Player) fromServer.readObject();
             me = player;
 
@@ -116,7 +116,7 @@ public class Client1 implements Runnable {
                         waitForPlayerAction();
                         if(continueToPlay) {
                             if(sendMove() == false) {
-                                System.out.println("Ruch nieprawidlowy, podaj nowy ruch.");
+                                System.out.println("Illegal move, try again.");
                                 continue;
                             }
                             recieveInfoFromServer();
@@ -134,7 +134,7 @@ public class Client1 implements Runnable {
                             break;
                         }
                         else {
-                            System.out.println("Ruch nieprawidlowy, podaj nowy ruch.");
+                            System.out.println("Illegal move, try again.");
                         }
                     }
 
@@ -160,7 +160,7 @@ public class Client1 implements Runnable {
                 guard = false;
             }
             catch (Exception ex) {
-                System.out.println("Nieprawidlowa dana, sprobuj jeszcze raz.");
+                System.out.println("Wrong data, try again");
                 String unused = scanner.nextLine();
             }
         }

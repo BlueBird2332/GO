@@ -69,6 +69,8 @@ public class Session implements Runnable {
                     ClientToServerMessage move;
                     try {
                         move = (ClientToServerMessage) fromPlayer1.readObject();
+                        toPlayer1.reset();
+                        toPlayer2.reset();
 
                         if(move.type() == ClientToServerMessage.Type.SURRENDER) {
                             toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, null, null));
@@ -132,6 +134,8 @@ public class Session implements Runnable {
                     ClientToServerMessage move;
                     try {
                         move = (ClientToServerMessage) fromPlayer2.readObject();
+                        toPlayer1.reset();
+                        toPlayer2.reset();
 
                         if(move.type() == ClientToServerMessage.Type.SURRENDER) {
                             toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, null, null));
@@ -185,7 +189,7 @@ public class Session implements Runnable {
                 }
             }
         } catch (IOException ex) {
-            System.err.println("ex");
+            System.err.println(ex);
         }
     }
 
