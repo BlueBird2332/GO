@@ -1,10 +1,9 @@
-package org.example;
+package org.example.clientServer;
+
+import org.example.game.Player;
 
 import java.io.*;
 import java.net.*;
-import javax.swing.*;
-import java.awt.*;
-import java.util.Date;
 
 /**
  *
@@ -12,8 +11,6 @@ import java.util.Date;
  */
 public class Server {
 
-    public static final int PLAYER1_BLACK = 1;
-    public static final int PLAYER2_WHITE = 2;
 
     public static void main(String[] args) {
         Server display = new Server();
@@ -32,17 +29,19 @@ public class Server {
                 Socket firstPlayer = serverSocket.accept();
                 System.out.println("Player 1 joined session " + sessionNum + ". Player 1's IP address " + firstPlayer.getInetAddress().getHostAddress() + "\n");
                 //notify first player that he is first player
-                new DataOutputStream(firstPlayer.getOutputStream()).writeInt(PLAYER1_BLACK);
+                ObjectOutputStream toPlayer1 = new ObjectOutputStream(firstPlayer.getOutputStream());
+                toPlayer1.writeObject(Player.BLACK);
 
                 //connection to player2
                 Socket secondPlayer = serverSocket.accept();
                 System.out.println("Player 2 joined session " + sessionNum + ". Player 2's IP address " + firstPlayer.getInetAddress().getHostAddress() + "\n");
                 //notify second player that he is second player
-                new DataOutputStream(secondPlayer.getOutputStream()).writeInt(PLAYER2_WHITE);
+                ObjectOutputStream toPlayer2 = new ObjectOutputStream(secondPlayer.getOutputStream());
+                toPlayer2.writeObject(Player.WHITE);
 
                 //starting the thread for two players
                 System.out.println("Starting a thread for session " + sessionNum + "...\n");
-                Session game = new Session(firstPlayer, secondPlayer);
+                Session game = new Session(firstPlayer, toPlayer1, secondPlayer, toPlayer2);
                 Thread t1 = new Thread(game);
                 t1.start();
                 sessionNum++;
