@@ -35,8 +35,8 @@ public class Board {
         return board[row][column];
     }
 
-    public void modifyBoard(int row, int column, CellContents constant){
-        this.board[row][column] = constant.value();
+    public void modifyBoard(int row, int column, String constant){
+        this.board[row][column] = constant;
     }
     public void printBoard() {
         for (String[] strings : board) {

@@ -107,45 +107,50 @@ public final class GameEngine {
         return neighbours.stream().anyMatch(stone -> Objects.equals(stone.contents(), CellContents.EMPTY.value()));
     }
 
-
-    private void mergeBoards(Board oldBoard, Board newBoard){
+    private CaptureResult mergeBoards(Board oldBoard, Board newBoard){
+        return mergeBoards(oldBoard, newBoard, CellContents.EMPTY.value());
+    }
+    private CaptureResult mergeBoards(Board oldBoard, Board newBoard, String contentsToFillWith){
 
         System.out.println("Capturing performed merging boards");
-
+        int count = 0;
+        String colour = "";
         if (oldBoard.rowSize() != newBoard.rowSize()
             || oldBoard.colSize() != newBoard.colSize()) {
             throw new IllegalArgumentException("Arrays' size do not match");
-        }
-        else {
+        } else {
             for(int i = 0; i < oldBoard.rowSize(); i++){
                 for(int j = 0; j < oldBoard.colSize(); j++){
                     if(oldBoard.getCellContent(i, j).equals(newBoard.getCellContent(i ,j))){
                         continue;
                     } else {
-                        if(Objects.equals(oldBoard.getCellContent(i, j), CellContents.BLACK.value())){
-                            blackCaptured += 1;
-                        } else {
-                            whiteCaptured += 1;
-                        }
-                        oldBoard.modifyBoard(i, j, CellContents.EMPTY);
+                        count++;
+                        colour = oldBoard.getCellContent(i, j);
+                        oldBoard.modifyBoard(i, j, contentsToFillWith);
                     }
                 }
             }
         }
+        return new CaptureResult(count, colour);
     }
 
-
-
+    private void updateResults(CaptureResult cr){
+        if(Objects.equals(cr.colour(), CellContents.BLACK.value())){
+            blackCaptured += cr.count();
+        } else {
+            whiteCaptured += cr.count();
+        }
+    }
 
 
     public void makeMove(int row, int column, Player player){
         if(isMoveAllowed(row, column, player.value())){
             if(player == Player.BLACK){
-                board.modifyBoard(row, column, CellContents.BLACK);
+                board.modifyBoard(row, column, CellContents.BLACK.value());
                 updateHistory();
                 performCapturing(new Stone(row, column, CellContents.WHITE.value()));
             } else {
-                board.modifyBoard(row, column, CellContents.WHITE);
+                board.modifyBoard(row, column, CellContents.WHITE.value());
                 updateHistory();
                 performCapturing(new Stone(row, column, CellContents.BLACK.value()));
             }
@@ -172,22 +177,38 @@ public final class GameEngine {
     }
 
 
-    private int getEnclosedArea(String colour){
-        String[][] copyBoard = board.copyBoard();
+    public int getEnclosedArea(String colour){
+        Board copyBoard = new Board(board.copyBoard());
         int totalArea = 0;
 
-        for (int i = 0; i < copyBoard.length; i++) {
-            for (int j = 0; j < copyBoard[0].length; j++) {
-                if (!Objects.equals(copyBoard[i][j], CellContents.VISITED.value())) {
-                     //markAreaDFS(copyBoard, new Stone(i, j, colour));
+        for (int i = 0; i < copyBoard.rowSize(); i++) {
+            for (int j = 0; j < copyBoard.colSize(); j++) {
+                if (Objects.equals(copyBoard.getCellContent(i, j), CellContents.EMPTY.value())) {
+                    var temp = new Board(copyBoard.copyBoard());
+                    if(!markAreaDFS(temp, new Stone(i, j, CellContents.EMPTY.value()), getOpponentColour(colour))){
+                        var cr = mergeBoards(copyBoard, temp, CellContents.VISITED.value());
+                        totalArea += cr.count();
+                    };
                 }
             }
         }
-        return 1;
+        return totalArea;
     }
 
-    private boolean markAreaDFS(String[][] board, Stone stone){
-        return true;
+    private boolean markAreaDFS(Board board, Stone stone, String opponnentsColour){
+        // To DO
+        board.modifyBoard(stone.row(), stone.column(), CellContents.VISITED.value());
+        boolean foundOpponentFlag = false;
+        for(Stone neighbour : getNeighbours(stone.row(), stone.column(),  board.getBoard())){
+            if(neighbour.contents().equals(stone.contents())){
+                //Another empty stone - continue search
+                foundOpponentFlag = foundOpponentFlag || markAreaDFS(board, neighbour, opponnentsColour);
+            }
+            if(neighbour.contents().equals(opponnentsColour)){
+                foundOpponentFlag = true;
+            }
+        }
+        return foundOpponentFlag;
     }
 //
     private boolean isMoveSuicide(int row, int column, String colour) {
@@ -202,10 +223,7 @@ public final class GameEngine {
         copyBoard[row][column] = colour;
 //
         var result = initializeCapturing(new Stone(row, column, getOpponentColour(colour)), copyBoard);
-//        System.out.println(result);
         boolean canCapture = result != null;
-//        System.out.println("can capture = " + canCapture);
-//        System.out.println("can be Captured = " + canBeCaptured);
         return !canCapture && canBeCaptured;
     }
 //
@@ -216,7 +234,7 @@ public final class GameEngine {
             b.printBoard();
             var temp = new Board(copyBoard);
             if(b.compareBoards(temp)){
-                System.out.println("Move Against Ko");
+                //"Move Against Ko"
                 return true;
             }
         }
