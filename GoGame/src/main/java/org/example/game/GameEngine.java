@@ -1,7 +1,5 @@
 package org.example.game;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.Objects;
 
 public final class GameEngine {
@@ -12,10 +10,10 @@ public final class GameEngine {
     private int whiteCaptured = 0;
     private int blackCaptured = 0;
 
-    {
-        initializeBoard();
+    public GameEngine(Integer boardSize){
+        this.board = new Board(boardSize);
     }
-    public void initializeBoard() {
+    public GameEngine(){
         this.board = new Board(19);
     }
 

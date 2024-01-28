@@ -1,5 +1,6 @@
-package org.example.clientServer;
+package org.example.clientServer.GUI;
 
+import org.example.clientServer.SessionInterface;
 import org.example.clientServer.protocols.ClientToServerMessage;
 import org.example.clientServer.protocols.ServerToClientMessage;
 import org.example.game.GameEngine;
@@ -12,13 +13,13 @@ import java.net.*;
  *
  * @author aid
  */
-public class Session implements SessionInterface {
+public class SessionForGUI implements SessionInterface {
 
     //declaring constants
     //public static int PLAYER1_BLACK = 1;
     //public static int PLAYER2_WHITE = 2;
     //public static int DRAW = 3;
-   //public static int CONTINUE = 4;
+    //public static int CONTINUE = 4;
 
     //sockets
     private Socket firstPlayer;
@@ -34,20 +35,21 @@ public class Session implements SessionInterface {
     private GameEngine gameEngine;
     private int passCounter = 0;
 
-    public Session(Socket firstPlayer, ObjectOutputStream toPlayer1, Socket secondPlayer, ObjectOutputStream toPlayer2) {
+    public SessionForGUI(Socket firstPlayer, ObjectOutputStream toPlayer1, ObjectInputStream fromPlayer1, Socket secondPlayer, ObjectOutputStream toPlayer2, Integer boardSize) {
         this.firstPlayer = firstPlayer;
         this.toPlayer1 = toPlayer1;
+        this.fromPlayer1 = fromPlayer1;
         this.secondPlayer = secondPlayer;
         this.toPlayer2 = toPlayer2;
-        gameEngine = new GameEngine();
-;
+        gameEngine = new GameEngine(boardSize);
+
     }
 
     @Override
     public void run() {
         try {
 
-            fromPlayer1 = new ObjectInputStream(firstPlayer.getInputStream());
+            //fromPlayer1 = new ObjectInputStream(firstPlayer.getInputStream());
             fromPlayer2 = new ObjectInputStream(secondPlayer.getInputStream());
 
 
@@ -72,7 +74,7 @@ public class Session implements SessionInterface {
                         toPlayer2.reset();
 
                         if(move.type() == ClientToServerMessage.Type.SURRENDER) {
-                            toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, null, null));
+                            toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, gameEngine.getBoard(), null));
                             guardian = false;
                             toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED, gameEngine.getBoard(), Player.WHITE));
                             toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED, gameEngine.getBoard(), Player.WHITE));
@@ -80,7 +82,7 @@ public class Session implements SessionInterface {
 
                         }
                         else if(move.type() == ClientToServerMessage.Type.PASS) {
-                            toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, null, null));
+                            toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, gameEngine.getBoard(), null));
                             guardian = false;
                             passCounter++;
                             if(passCounter >=2) {
@@ -103,7 +105,7 @@ public class Session implements SessionInterface {
                                     gameEngine.makeMove(move.row(), move.column(), move.player());
                                     //gameEngine.printBoard();
                                     gameEngine.getBoard().printBoard();
-                                    toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, null, null));
+                                    toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, gameEngine.getBoard(), null));
                                     toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_MADE, gameEngine.getBoard(), Player.BLACK));
                                     guardian = false;
                                 }
@@ -137,7 +139,7 @@ public class Session implements SessionInterface {
                         toPlayer2.reset();
 
                         if(move.type() == ClientToServerMessage.Type.SURRENDER) {
-                            toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, null, null));
+                            toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, gameEngine.getBoard(), null));
                             guardian = false;
                             toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED, gameEngine.getBoard(), Player.BLACK));
                             toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED, gameEngine.getBoard(), Player.BLACK));
@@ -145,7 +147,7 @@ public class Session implements SessionInterface {
 
                         }
                         else if(move.type() == ClientToServerMessage.Type.PASS) {
-                            toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, null, null));
+                            toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, gameEngine.getBoard(), null));
                             guardian = false;
                             passCounter++;
                             if(passCounter >=2) {
@@ -166,7 +168,7 @@ public class Session implements SessionInterface {
                                 if(gameEngine.isMoveAllowed(move.row(), move.column(), move.player())) {
                                     gameEngine.makeMove(move.row(), move.column(), move.player());
                                     gameEngine.printBoard();
-                                    toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, null, null));
+                                    toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, gameEngine.getBoard(), null));
                                     toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_MADE, gameEngine.getBoard(), Player.WHITE));
                                     guardian = false;
                                 }
@@ -193,3 +195,4 @@ public class Session implements SessionInterface {
     }
 
 }
+

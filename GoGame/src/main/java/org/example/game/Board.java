@@ -1,8 +1,7 @@
 package org.example.game;
 
-import java.io.Serializable;
 import java.util.Arrays;
-public class Board implements Serializable {
+public class Board implements BoardInterface {
 
     private String[][] board ;
     private int size;

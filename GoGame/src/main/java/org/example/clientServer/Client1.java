@@ -7,7 +7,6 @@ import org.example.game.Constants;
 import org.example.game.Player;
 
 import java.net.*;
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

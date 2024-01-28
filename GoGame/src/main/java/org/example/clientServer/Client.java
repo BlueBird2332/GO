@@ -7,7 +7,6 @@ import org.example.game.Constants;
 import org.example.game.Player;
 
 import java.net.*;
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,15 +16,7 @@ import java.util.Scanner;
  *
  * @author aid
  */
-public class Client implements Runnable {
-
-    //declaring constants
-    //public static final int PLAYER1_BLACK = 1;
-    //public static final int PLAYER2_WHITE = 2;
-
-    //public static final int PLAYER1_WON = 1;
-    //public static final int PLAYER2_WON = 2;
-    //public static final int DRAW = 3;
+public class Client implements ClientInterface {
 
 
     Socket socket;
@@ -45,19 +36,31 @@ public class Client implements Runnable {
     private Scanner scanner;
 
 
+    /*
     public static void main(String[] args) {
         Client client = new Client();
         //display.initialize();
     }
+    */
 
-    Client() {
+    //TODO:
+    //  -może klasy eksperckie do wybieranie, ruszania, odbierania
+    //  - \> łatwiejsze zmiany, na wspólnym interejsie
+    //  - jakiś builder dla gui?
+
+
+    public Client() {
+        //TODO: GUI
+        //  - ekran startowu
+        //  - wybór wielkości planszy
+        //  - wybór gry z partnerem czy botem
         //TODO: rozne wielkosci tablicy, to juz przy GUI
         board = new Board(11);
         connectToServer();
+        //TODO: GUI - oewamy scanner
         scanner = new Scanner(System.in);
     }
-    /*public void initialize() {
-    }*/
+
 
     //method for connecting to server
     private void connectToServer() {
@@ -81,6 +84,9 @@ public class Client implements Runnable {
     @Override
     public void run() {
         try {
+            //TODO: kiedy było czeknie na wybór planszy i bota?
+            //TODO: GUI
+            //  - zmień scenerię na planszę
             //read which player
             //System.out.println("Proba startu");
             Player player = (Player) fromServer.readObject();
@@ -160,6 +166,8 @@ public class Client implements Runnable {
         boolean guard = true;
         while (guard) {
             try {
+                //TODO: GUI
+                //  - jak czytamy ruch
                 rowSelected = scanner.nextInt();
                 columnSelected = scanner.nextInt();
                 //System.out.println("Odczytałem ruch: " + rowSelected + " " + columnSelected );
@@ -189,10 +197,14 @@ public class Client implements Runnable {
 
         ServerToClientMessage feedback = (ServerToClientMessage) fromServer.readObject();
         if(feedback.type() == ServerToClientMessage.Type.MOVE_SUCCESFULL) {
+            //TODO: GUI
+            // - zaktualizuj planszę
             System.out.println("Waiting for opponent's move");
             return true;
         }
         if(feedback.type() == ServerToClientMessage.Type.MOVE_FAILURE) {
+            //TODO:
+            //  - wyswietl okno błędu
             //System.out.println("nieudany ruch");
             return false;
         }
@@ -202,6 +214,8 @@ public class Client implements Runnable {
     private void recieveInfoFromServer() throws IOException {
         try {
             ServerToClientMessage message = (ServerToClientMessage) fromServer.readObject();
+            //TODO: GUI
+            //  - oganąć to wszystko
             if (message.type() == ServerToClientMessage.Type.GAME_FINISHED) {
 
                 continueToPlay = false;

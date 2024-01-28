@@ -1,0 +1,143 @@
+package org.example.game;
+
+import javafx.geometry.Insets;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+
+import java.util.Arrays;
+
+public class BoardGUI implements BoardInterface{
+
+    private Board board;
+    private boolean moveEnable=true;
+    private int rowSelected=-3;
+    private  int columnSelected=-3;
+
+    public BoardGUI(int size){
+        board = new Board(size);
+    }
+    public BoardGUI(String[][] board) {
+        this.board = new Board(board);
+    }
+    public BoardGUI(Board board){
+        this.board = board;
+        moveEnable=false;
+    }
+
+    public String[][] getBoard() {
+        return this.board.getBoard();
+    }
+    public Board getBoardBoard() {
+        return this.board;
+    }
+    public int getSize() {
+        return this.board.getSize();
+    }
+    public String getCellContent(int row, int column){
+        return this.board.getCellContent(row, column);
+    }
+    public void modifyBoard(int row, int column, Constants constant){
+        this.board.modifyBoard(row,column, constant);
+    }
+    public boolean checkMoveEnable(){
+        return moveEnable;
+    }
+    public void okToMove(){
+        moveEnable = true;
+    }
+    public void stopMoving(){
+        moveEnable = false;
+    }
+
+    public void setRowSelected(int rowSelected){
+        this.rowSelected = rowSelected;
+    }
+    public int getRowSelected(){
+        return rowSelected;
+    }
+    public void setColumnSelected(int columnSelected){
+        this.columnSelected = columnSelected;
+    }
+    public int getColumnSelected(){
+        return columnSelected;
+    }
+    public void surrender(){
+            rowSelected = -2;
+            columnSelected = -2;
+            stopMoving();
+
+
+    }
+    public void pass(){
+            rowSelected = -1;
+            columnSelected = -1;
+            stopMoving();
+
+
+    }
+
+    public Pane showBoard(double windowWidth, double windowHeight) {
+        Pane root = new Pane();
+        root.setBackground(new Background(new BackgroundFill(Color.SADDLEBROWN, CornerRadii.EMPTY, Insets.EMPTY)));
+        windowHeight-=40;
+
+        int boardSize = this.getSize();
+        double tileSize = Math.min(windowWidth, windowHeight)/boardSize;
+        double widthOffset = (windowWidth - tileSize*boardSize)/2.0;
+        double heightOffset = (windowHeight - tileSize*boardSize)/2.0;
+        for (int i = 0; i < boardSize; i++) {
+            Line verticalLine = new Line(i * tileSize + tileSize/2 + widthOffset, 0 + heightOffset, i * tileSize + tileSize/2 + widthOffset, boardSize * tileSize + heightOffset);
+            Line horizontalLine = new Line(0 + widthOffset, i * tileSize + tileSize/2 + heightOffset, boardSize * tileSize + widthOffset, i * tileSize + tileSize/2  + heightOffset);
+
+            verticalLine.setStroke(Color.BLACK);
+            horizontalLine.setStroke(Color.BLACK);
+            verticalLine.setStrokeWidth(4.0);
+            horizontalLine.setStrokeWidth(4.0);
+
+            root.getChildren().addAll(verticalLine, horizontalLine);
+        }
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+
+
+                final int x = j;
+                final int y = i;
+
+                Circle stone = new Circle(tileSize / 4);
+                stone.setCenterX(j * tileSize + tileSize / 2 + widthOffset);
+                stone.setCenterY(i * tileSize + tileSize / 2 + heightOffset);
+                if(board.getCellContent(x,y)==Constants.EMPTY.value()){
+                    stone.setFill(Color.LIGHTGRAY);
+                }
+                else if(board.getCellContent(x,y)==Constants.BLACK.value()){
+                    stone.setFill(Color.BLACK);
+                }
+                else if(board.getCellContent(x,y)==Constants.WHITE.value()){
+                    stone.setFill(Color.WHITE);
+                }
+
+                stone.setOnMouseClicked(event -> {
+                    if(checkMoveEnable()){
+                        chooseStone(x,y);
+                    }
+
+                });
+
+                root.getChildren().add(stone);
+            }
+        }
+
+        return root;
+
+    }
+    private synchronized void chooseStone(int x, int y){
+            rowSelected = x;
+            columnSelected = y;
+            stopMoving();
+            System.out.println("WYBRANO "+ x + " " + y);
+            System.out.println("row "+rowSelected + " solumn" + columnSelected + " enable" + moveEnable);
+
+    }
+}
