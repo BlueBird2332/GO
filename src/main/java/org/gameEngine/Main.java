@@ -1,9 +1,10 @@
-package org.example;
+package org.gameEngine;
+
+import org.models.CellContents;
 
 import java.util.Arrays;
 
-import static org.example.Player.BLACK;
-import static org.example.Player.WHITE;
+import static org.models.Player.BLACK;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,6 +18,11 @@ public class Main {
         //gameEngine.makeMove(0,4, BLACK);
         gameEngine.printBoard();
         System.out.println(gameEngine.getEnclosedArea(CellContents.BLACK.value()));
+        var encoded = BoardConverter.encode(gameEngine.board.getBoard());
+        System.out.println(encoded);
+        var decoded = BoardConverter.decode(encoded);
+        System.out.println(Arrays.deepToString(decoded));
+
 
     }
 
@@ -36,6 +42,7 @@ public class Main {
         board.printBoard();
         //board.modifyBoard(0,4, CellContents.BLACK);
         board.printBoard();
+
     }
 
     private static void fillKoBoard(Board board){

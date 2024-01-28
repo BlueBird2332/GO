@@ -1,4 +1,6 @@
-package org.example;
+package org.models;
+
+import org.models.Stone;
 
 import java.util.List;
 

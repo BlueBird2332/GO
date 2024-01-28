@@ -1,4 +1,6 @@
-package org.example;
+package org.gameEngine;
+
+import org.models.CellContents;
 
 import java.util.Arrays;
 import java.util.Objects;

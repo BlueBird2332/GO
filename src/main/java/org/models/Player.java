@@ -1,4 +1,4 @@
-package org.example;
+package org.models;
 
 public enum Player {
     BLACK("B"), WHITE("W");

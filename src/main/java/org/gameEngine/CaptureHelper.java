@@ -1,4 +1,4 @@
-package org.example;
+package org.gameEngine;
 
 public class CaptureHelper {
 }
