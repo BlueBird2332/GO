@@ -34,6 +34,7 @@ public class ClientGUI extends Application implements ClientInterface  {
     private Player me;
     private BoardGUI board;
     private Label topLabel;
+    private BorderPane rootPane;
     private Pane boardPane;
     private Stage primaryStage;
 
@@ -67,8 +68,25 @@ public class ClientGUI extends Application implements ClientInterface  {
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("GO - player client");
+        /*board = new BoardGUI(9);
+
+        Pane top = board.showBoard(800, 800);
+
+        BorderPane test = new BorderPane();
+        test.setTop(top);
+        test.setCenter(boardPane);
+        this.primaryStage.setScene(new Scene(test, 800, 800));
+
+
+        board.modifyBoard(0,0,Constants.BLACK);
+        boardPane = board.showBoard(primaryStage.getWidth(), primaryStage.getHeight()-30.0);
+*/
+
         this.primaryStage.setScene(makeInitScene(this.primaryStage));
         this.primaryStage.show();
+
+
+
     }
     private Scene makeInitScene(Stage primaryStage) {
         /*TODO:
@@ -114,8 +132,6 @@ public class ClientGUI extends Application implements ClientInterface  {
     }
 
     private Scene makeChoosingSizeScene(Stage primaryStage){
-        //TODO:
-        //  - pokaż tablicę więc
         BorderPane rootPane = new BorderPane();
         VBox center = new VBox(40.0);
         center.setAlignment(Pos.CENTER);
@@ -150,9 +166,9 @@ public class ClientGUI extends Application implements ClientInterface  {
         //  - za każdym razem rysuj nowy? Tak chyba wygodniej. Albo po prostu przejdź po kamieniach i je zaktualizuj
         //  - W GUIBoardzie trzymaj kamienie, z setOnAction ztobionym - że się Row i Column wybiera, jeżeli my turn? i wysyła i supeancko
         //  - a jak odbierasz boarda, to ogarniasz z niego jak pokazać chyba
-        BorderPane rootPane = new BorderPane();
+        this.rootPane = new BorderPane();
         boardPane = board.showBoard(primaryStage.getWidth(), primaryStage.getHeight() - 60.0);
-        rootPane.setCenter(boardPane);
+        this.rootPane.setCenter(boardPane);
 
         HBox bottom = new HBox(20);
         bottom.setAlignment(Pos.CENTER);
@@ -207,14 +223,22 @@ public class ClientGUI extends Application implements ClientInterface  {
 
     }
 
-    private void runningGame(Stage primaryStage){
-
-    }
 
 
     @Override
     public void run() {
         try {
+            /*
+            Platform.runLater(() ->{
+                VBox box = new VBox(20);
+                this.rootPane.setCenter(box);
+                box.getChildren().add(new Button("alfa"));
+                box = new VBox(30);
+                this.rootPane.setCenter(box);
+                box.getChildren().add(new Button("cds"));
+
+            });
+             */
             //TODO: kiedy było czeknie na wybór planszy i bota?
             //TODO: GUI
             //  - zmień scenerię na planszę
@@ -230,7 +254,10 @@ public class ClientGUI extends Application implements ClientInterface  {
 
                 System.out.println("Player 1 with token 'B'");
                 System.out.println("Waiting for player 2 to join");
-                topLabel.setText("Oczekiwanie na dolaczenie przeciwnika");
+                Platform.runLater(() -> {
+                    topLabel.setText("Oczekiwanie na dolaczenie przeciwnika");
+                });
+
 
                 //notification that player 2 joined
                 Player otherPlayer = (Player) fromServer.readObject();
@@ -261,7 +288,7 @@ public class ClientGUI extends Application implements ClientInterface  {
                     board.stopMoving();
                 });
 
-  //IDEA: jezeli nie ja zaczynam, to ustawiam enable to move na NIEok, myTurn na false
+                //IDEA: jezeli nie ja zaczynam, to ustawiam enable to move na NIEok, myTurn na false
             }
 
             while (continueToPlay) {
@@ -302,17 +329,21 @@ public class ClientGUI extends Application implements ClientInterface  {
         }
     }
     private void waitForPlayerAction() throws InterruptedException {
-            while (board.checkMoveEnable()) {
-                System.out.println(board.checkMoveEnable());
-            }
-            System.out.println("DOCZEKAŁEM SIE");
+        while (board.checkMoveEnable()) {
+            System.out.println(board.checkMoveEnable());
+        }
+        System.out.println("DOCZEKAŁEM SIE");
     }
 
     private boolean sendMove() throws IOException, ClassNotFoundException {
         System.out.println("Jestem w sendMove");
 
-        if (board.getRowSelected() == -2 && board.getColumnSelected() == -2) {
+        if (board.getRowSelected() == -3 && board.getColumnSelected() == -3) {
+            return false;
+        }
+        else if (board.getRowSelected() == -2 && board.getColumnSelected() == -2) {
             toServer.writeObject (new ClientToServerMessage(ClientToServerMessage.Type.SURRENDER, rowSelected,columnSelected, me));
+            continueToPlay = false;
         }
         else if (board.getRowSelected() == -1 && board.getColumnSelected() == -1) {
             toServer.writeObject (new ClientToServerMessage(ClientToServerMessage.Type.PASS, rowSelected,columnSelected, me));
@@ -325,11 +356,13 @@ public class ClientGUI extends Application implements ClientInterface  {
 
         ServerToClientMessage feedback = (ServerToClientMessage) fromServer.readObject();
         if(feedback.type() == ServerToClientMessage.Type.MOVE_SUCCESFULL) {
-            Board returnBoard = feedback.board();
-            board = new BoardGUI(returnBoard);
+            board.stopMoving();
+            Board receivedBoard = feedback.board();
+            board.modifyBoard(receivedBoard);
             board.getBoardBoard().printBoard();
             Platform.runLater(() -> {
                 boardPane = board.showBoard(this.primaryStage.getWidth(), this.primaryStage.getHeight()-60.0);
+                this.rootPane.setCenter(boardPane);
                 topLabel.setText("Oczekiwanie na ruch przeciwnika");
             });
 
@@ -337,7 +370,8 @@ public class ClientGUI extends Application implements ClientInterface  {
             System.out.println("Waiting for opponent's move");
             return true;
         }
-        if(feedback.type() == ServerToClientMessage.Type.MOVE_FAILURE) {
+        else if(feedback.type() == ServerToClientMessage.Type.MOVE_FAILURE) {
+            board.okToMove();
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Nieprawidłowy ruch");
@@ -345,7 +379,7 @@ public class ClientGUI extends Application implements ClientInterface  {
                 alert.setContentText("Wykonaj inny ruch");
 
                 alert.showAndWait();
-                board.okToMove();
+
             });
 
             //System.out.println("nieudany ruch");
@@ -357,8 +391,7 @@ public class ClientGUI extends Application implements ClientInterface  {
     private void recieveInfoFromServer() throws IOException {
         try {
             ServerToClientMessage message = (ServerToClientMessage) fromServer.readObject();
-            //TODO: GUI
-            //  - oganąć to wszystko
+
             if (message.type() == ServerToClientMessage.Type.GAME_FINISHED) {
 
                 continueToPlay = false;
@@ -380,10 +413,11 @@ public class ClientGUI extends Application implements ClientInterface  {
             }
             else if(message.type() == ServerToClientMessage.Type.MOVE_MADE) {
                 Board receivedBoard = message.board();
-                board = new BoardGUI(receivedBoard);
+                board.modifyBoard(receivedBoard);
+                board.okToMove();
                 Platform.runLater(() -> {
                     boardPane = board.showBoard(this.primaryStage.getWidth(), this.primaryStage.getHeight()-60.0);
-                    board.okToMove();
+                    this.rootPane.setCenter(boardPane);
                     topLabel.setText("TWOJA KOLEJ");
                 });
 
@@ -391,9 +425,9 @@ public class ClientGUI extends Application implements ClientInterface  {
                 System.out.println("My turn (" + myToken + ")");
             }
             else if(message.type() == ServerToClientMessage.Type.OTHER_PLAYER_PASSED) {
+                board.okToMove();
                 Platform.runLater(() -> {
                     topLabel.setText("OPONENT PASOWAŁ! TWOJA KOLEJ");
-                    board.okToMove();
                 });
                 System.out.println("The opponent passed");
                 System.out.println("My turn (" + myToken + ")");

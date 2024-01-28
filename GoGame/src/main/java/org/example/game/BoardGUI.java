@@ -41,6 +41,9 @@ public class BoardGUI implements BoardInterface{
     public void modifyBoard(int row, int column, Constants constant){
         this.board.modifyBoard(row,column, constant);
     }
+    public void modifyBoard(Board newBoard){
+        this.board = newBoard;
+    }
     public boolean checkMoveEnable(){
         return moveEnable;
     }
@@ -63,17 +66,17 @@ public class BoardGUI implements BoardInterface{
     public int getColumnSelected(){
         return columnSelected;
     }
-    public void surrender(){
-            rowSelected = -2;
-            columnSelected = -2;
-            stopMoving();
+    public synchronized void surrender(){
+        rowSelected = -2;
+        columnSelected = -2;
+        stopMoving();
 
 
     }
-    public void pass(){
-            rowSelected = -1;
-            columnSelected = -1;
-            stopMoving();
+    public synchronized void pass(){
+        rowSelected = -1;
+        columnSelected = -1;
+        stopMoving();
 
 
     }
@@ -102,25 +105,25 @@ public class BoardGUI implements BoardInterface{
             for (int j = 0; j < boardSize; j++) {
 
 
-                final int x = j;
-                final int y = i;
+                final int row = i;
+                final int col = j;
 
                 Circle stone = new Circle(tileSize / 4);
                 stone.setCenterX(j * tileSize + tileSize / 2 + widthOffset);
                 stone.setCenterY(i * tileSize + tileSize / 2 + heightOffset);
-                if(board.getCellContent(x,y)==Constants.EMPTY.value()){
-                    stone.setFill(Color.LIGHTGRAY);
+                if(board.getCellContent(row, col).equals(Constants.EMPTY.value())){
+                    stone.setFill(Color.GRAY);
                 }
-                else if(board.getCellContent(x,y)==Constants.BLACK.value()){
+                else if(board.getCellContent(row, col).equals(Constants.BLACK.value())){
                     stone.setFill(Color.BLACK);
                 }
-                else if(board.getCellContent(x,y)==Constants.WHITE.value()){
+                else if(board.getCellContent(row, col).equals(Constants.WHITE.value())){
                     stone.setFill(Color.WHITE);
                 }
 
                 stone.setOnMouseClicked(event -> {
                     if(checkMoveEnable()){
-                        chooseStone(x,y);
+                        chooseStone(row, col);
                     }
 
                 });
@@ -132,12 +135,12 @@ public class BoardGUI implements BoardInterface{
         return root;
 
     }
-    private synchronized void chooseStone(int x, int y){
-            rowSelected = x;
-            columnSelected = y;
-            stopMoving();
-            System.out.println("WYBRANO "+ x + " " + y);
-            System.out.println("row "+rowSelected + " solumn" + columnSelected + " enable" + moveEnable);
+    private synchronized void chooseStone(int row, int col){
+        rowSelected = row;
+        columnSelected = col;
+        stopMoving();
+        System.out.println("WYBRANO "+ row + " " + col);
+        System.out.println("row "+rowSelected + " solumn" + columnSelected + " enable" + moveEnable);
 
     }
 }

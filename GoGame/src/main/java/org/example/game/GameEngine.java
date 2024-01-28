@@ -45,8 +45,6 @@ public final class GameEngine {
 
     public void makeMove(int row, int column, Player player){
         if(isMoveAllowed(row, column, player)){
-            //TO DO
-            // copy the board
             if(player == Player.BLACK){
                 board.modifyBoard(row, column, Constants.BLACK);
             } else {
@@ -60,7 +58,7 @@ public final class GameEngine {
             return false;
         }
         if (!Objects.equals(board.getCellContent(row, column), Constants.EMPTY.value())) {
-            System.out.println("cannot make a move");
+            System.out.println("cannot make a move" + row + " " + column);
             return false;
         } else {
             return true;
