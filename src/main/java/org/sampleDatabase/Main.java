@@ -1,7 +1,6 @@
 package org.sampleDatabase;
 
 import org.models.GameStatus;
-import org.models.Move;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -57,7 +56,7 @@ public class Main {
         try {
             // Retrieve moves from the database
             @SuppressWarnings("unchecked")
-            List<GameStatus> gameStatusList = session.createQuery("FROM GameStaus").list();
+            List<GameStatus> gameStatusList = session.createQuery("FROM Move").list();
 
             // Print retrieved moves
             System.out.println("Retrieved Moves:");

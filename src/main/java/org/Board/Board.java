@@ -1,6 +1,8 @@
-package org.gameEngine;
+package org.Board;
 
 import org.models.CellContents;
+import org.models.Move;
+import org.models.Stone;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -17,7 +19,6 @@ public class Board {
             Arrays.fill(strings, CellContents.EMPTY.value());
         }
     }
-
     public Board(String[][] board){
         this.board = board;
     }
@@ -83,6 +84,9 @@ public class Board {
             }
         }
         return new Board(board);
+    }
+    public void addStone(Stone stone){
+        this.board[stone.row()][stone.column()] = stone.contents();
     }
 
     public Board deepCopy(){

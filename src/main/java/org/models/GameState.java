@@ -1,13 +1,10 @@
 package org.models;
 
-import org.Bot.Bot;
-import org.gameEngine.Board;
+import org.Board.Board;
 
-import java.util.List;
-
-public record GameState(Board board, int whitesCaptured, int blacksCaptured, Player nextPlayer, List<Board> koList) {
+public record GameState(Board board, int whitesCaptured, int blacksCaptured, Player nextPlayer) {
     public static GameState getDeepCopy(GameState toCopy){
-        return new GameState(new Board(toCopy.board.copyBoard()), toCopy.whitesCaptured, toCopy.blacksCaptured, toCopy.nextPlayer, toCopy.koList);
+        return new GameState(new Board(toCopy.board.copyBoard()), toCopy.whitesCaptured, toCopy.blacksCaptured, toCopy.nextPlayer);
     }
     public void printCurrentState(){
         System.out.println("Current State");

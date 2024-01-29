@@ -27,8 +27,9 @@ public class Bot {
 
 
     public Move findBestMove(int depth, Player player) {
-        List<Move> availableMoves = gameEngine.getAvailableMoves(gameEngine.board, player);
+        List<Move> availableMoves = MoveHelper.getAvailableMoves(gameEngine.board, player);
         Move bestMove = null;
+        int bestValue = isMaximizingPlayer(player)? Integer.MIN_VALUE : Integer.MAX_VALUE;
         this.minMaxStrategy = minMaxStrategies.get(player);
 
         for (Move move : availableMoves) {
@@ -42,10 +43,14 @@ public class Bot {
             gameEngine.setState(backUpState);
            // gameEngine.getCurrentState().printCurrentState();
 
+        if(minMaxStrategy.compare(bestValue, value)){
+            bestMove = move;
+            bestValue = value;
+        }
 
 //            if (value > bestValue) {
 //                bestValue = value;
-//                bestMove = move;
+//
 //            }
 
         }
@@ -60,9 +65,9 @@ public class Bot {
             //To do implement strategies
         }
 
-        List<Move> availableMoves = gameEngine.getAvailableMoves(gameEngine.board, player);
+        List<Move> availableMoves = MoveHelper.getAvailableMoves(gameEngine.board, player);
 
-        if (isMaximizingPlayer(player.value())){
+        if (isMaximizingPlayer(player)){
             int maxEval = Integer.MIN_VALUE;
             for (Move move : availableMoves) {
                 var backUpState = GameState.getDeepCopy(gameEngine.getCurrentState());
@@ -87,17 +92,8 @@ public class Bot {
         }
     }
     //White is always maximizing Player
-    private boolean isMaximizingPlayer(String colour) {
-        if(colour.equals("B")) {
-            return false;
-        }
-        if(colour.equals("W")) {
-            return true;
-        }
-        else{
-            throw new IllegalArgumentException();
-        }
+    private boolean isMaximizingPlayer(Player player) {
+        return player.equals(Player.WHITE);
     }
 
-    private int minimizingStrategy
 }

@@ -1,5 +1,5 @@
 package org.Bot;
 
 public interface MinMaxStrategy {
-    int compare(int a, int b);
+        boolean compare(int oldValue, int newValue);
 }

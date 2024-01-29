@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 
 @Entity
-@Table(name = "Moves")
+@Table(name = "Moves") //To Do Moves<GameID>
 public class GameStatus {
 
     @Id
@@ -24,18 +24,26 @@ public class GameStatus {
     @Column
     private int whitesCaptured;
 
+
     // Constructors, getters, and setters
 
     public GameStatus() {
     }
 
-    public GameStatus(String board, String nextMove, int blacksCaptured, int whitesCaptured) {
+    public GameStatus(int id, String board, String nextPlayer, int blacksCaptured, int whitesCaptured) {
+        this.id = id;
         this.board = board;
-        this.nextPlayer = nextMove;
+        this.nextPlayer = nextPlayer;
         this.blacksCaptured = blacksCaptured;
         this.whitesCaptured = whitesCaptured;
     }
 
+    public GameStatus(String board, String nextPlayer, int blacksCaptured, int whitesCaptured) {
+        this.board = board;
+        this.nextPlayer = nextPlayer;
+        this.blacksCaptured = blacksCaptured;
+        this.whitesCaptured = whitesCaptured;
+    }
     // Getters and setters
 
     public int getId() {
@@ -77,4 +85,5 @@ public class GameStatus {
     public void setWhitesCaptured(int whitesCaptured) {
         this.whitesCaptured = whitesCaptured;
     }
+
 }

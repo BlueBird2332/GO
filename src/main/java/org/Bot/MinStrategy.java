@@ -2,7 +2,7 @@ package org.Bot;
 
 public class MinStrategy implements MinMaxStrategy{
     @Override
-    public int compare(int a, int b) {
-        return Integer.min(a,b);
+    public boolean compare(int oldValue, int newValue) {
+        return oldValue > newValue;
     }
 }

@@ -1,4 +1,4 @@
-package org.gameEngine;
+package org.Board;
 
 public class BoardConverter {
     public static String[][] decode(String encodedBoard){

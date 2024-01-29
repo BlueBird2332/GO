@@ -1,10 +1,9 @@
 package org.gameEngine;
 
+import org.Board.Board;
 import org.Bot.Bot;
 import org.models.CellContents;
 import org.models.Move;
-
-import java.util.Arrays;
 
 import static org.models.Player.BLACK;
 import static org.models.Player.WHITE;
@@ -13,12 +12,15 @@ public class Main {
     public static void main(String[] args) {
         //testKo();
         //testNormal();
-        botTest();
+        //botTest();
 //        System.out.println(gameEngine.getEnclosedArea(CellContents.BLACK.value()));
 //        var encoded = BoardConverter.encode(gameEngine.board.getBoard());
 //        System.out.println(encoded);
 //        var decoded = BoardConverter.decode(encoded);
 //        System.out.println(Arrays.deepToString(decoded));
+//        Stone stone1 = new Stone(1, 1, "B");
+//        Stone stone2 = new Stone(1, 1, "B");
+//        System.out.println(stone1.equals(stone2));
 
 
     }
