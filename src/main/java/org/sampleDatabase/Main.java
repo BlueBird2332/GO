@@ -1,5 +1,6 @@
 package org.sampleDatabase;
 
+import org.models.GameStatus;
 import org.models.Move;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -24,7 +25,7 @@ public class Main {
         }
     }
 
-    private static void addMove(String board, String nextMove, int blacksCaptured, int whitesCaptured) {
+    private static void addMove(String board, String nextPlayer, int blacksCaptured, int whitesCaptured) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = null;
 
@@ -32,10 +33,10 @@ public class Main {
             transaction = session.beginTransaction();
 
             // Create a new Move object
-            Move move = new Move(board, nextMove, blacksCaptured, whitesCaptured);
+            GameStatus gameStatus= new GameStatus(board, nextPlayer, blacksCaptured, whitesCaptured);
 
             // Save the move to the database
-            session.persist(move);
+            session.persist(gameStatus);
 
             // Commit the transaction
             transaction.commit();
@@ -56,16 +57,16 @@ public class Main {
         try {
             // Retrieve moves from the database
             @SuppressWarnings("unchecked")
-            List<Move> moves = session.createQuery("FROM Move").list();
+            List<GameStatus> gameStatusList = session.createQuery("FROM GameStaus").list();
 
             // Print retrieved moves
             System.out.println("Retrieved Moves:");
-            for (Move move : moves) {
-                System.out.println("ID: " + move.getId() +
-                        ", Board: " + move.getBoard() +
-                        ", Next Move: " + move.getNextMove() +
-                        ", Blacks Captured: " + move.getBlacksCaptured() +
-                        ", Whites Captured: " + move.getWhitesCaptured());
+            for (GameStatus gameStatus : gameStatusList) {
+                System.out.println("ID: " + gameStatus.getId() +
+                        ", Board: " + gameStatus.getBoard() +
+                        ", Next Move: " + gameStatus.getNextPlayer() +
+                        ", Blacks Captured: " + gameStatus.getBlacksCaptured() +
+                        ", Whites Captured: " + gameStatus.getWhitesCaptured());
             }
         } catch (Exception e) {
             e.printStackTrace();

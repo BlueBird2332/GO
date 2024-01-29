@@ -16,7 +16,7 @@ public class GameStatus {
     private String board;
 
     @Column(nullable = false)
-    private String nextMove;
+    private String nextPlayer;
 
     @Column
     private int blacksCaptured;
@@ -31,7 +31,7 @@ public class GameStatus {
 
     public GameStatus(String board, String nextMove, int blacksCaptured, int whitesCaptured) {
         this.board = board;
-        this.nextMove = nextMove;
+        this.nextPlayer = nextMove;
         this.blacksCaptured = blacksCaptured;
         this.whitesCaptured = whitesCaptured;
     }
@@ -54,12 +54,12 @@ public class GameStatus {
         this.board = board;
     }
 
-    public String getNextMove() {
-        return nextMove;
+    public String getNextPlayer() {
+        return nextPlayer;
     }
 
-    public void setNextMove(String nextMove) {
-        this.nextMove = nextMove;
+    public void setNextPlayer(String nextMove) {
+        this.nextPlayer = nextMove;
     }
 
     public int getBlacksCaptured() {

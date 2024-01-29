@@ -1,57 +1,103 @@
 package org.Bot;
 
 import org.gameEngine.*;
+import org.models.GameState;
 import org.models.Move;
+import org.models.Player;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 
 public class Bot {
+    final HashMap<Player, MinMaxStrategy> minMaxStrategies;
 
-    public static Move findBestMove(GameEngine game, int depth) {
-        List<Move> availableMoves = game.getAvailableMoves();
+    private GameEngine gameEngine;
+    private MinMaxStrategy minMaxStrategy;
+
+    {
+        minMaxStrategies = new HashMap<>();
+        minMaxStrategies.put(Player.BLACK, new MinStrategy());
+        minMaxStrategies.put(Player.WHITE, new MaxStrategy());
+
+    }
+    public Bot(GameEngine ge){
+        this.gameEngine = ge;
+    }
+
+
+    public Move findBestMove(int depth, Player player) {
+        List<Move> availableMoves = gameEngine.getAvailableMoves(gameEngine.board, player);
         Move bestMove = null;
-        int bestValue = Integer.MIN_VALUE;
+        this.minMaxStrategy = minMaxStrategies.get(player);
 
         for (Move move : availableMoves) {
-            game.makeMove(move);
-            int value = minimax(game, depth - 1, false);
-            game.undoMove(move);
+            var backUpState = GameState.getDeepCopy(gameEngine.getCurrentState());
 
-            if (value > bestValue) {
-                bestValue = value;
-                bestMove = move;
-            }
+            //gameEngine.getCurrentState().printCurrentState();
+            gameEngine.makeMove(move);
+            gameEngine.getCurrentState().printCurrentState();
+            int value = minimax(depth - 1, player);
+            System.out.println(value);
+            gameEngine.setState(backUpState);
+           // gameEngine.getCurrentState().printCurrentState();
+
+
+//            if (value > bestValue) {
+//                bestValue = value;
+//                bestMove = move;
+//            }
+
         }
 
         return bestMove;
     }
 
-    private static int minimax(GameEngine game, int depth, boolean isMaximizingPlayer) {
+    private int minimax(int depth, Player player) {
+        System.out.println("here");
         if (depth == 0) {
-            return game.evaluateBoard();
+            return gameEngine.getState();
+            //To do implement strategies
         }
 
-        List<Move> availableMoves = game.getAvailableMoves();
+        List<Move> availableMoves = gameEngine.getAvailableMoves(gameEngine.board, player);
 
-        if (isMaximizingPlayer) {
+        if (isMaximizingPlayer(player.value())){
             int maxEval = Integer.MIN_VALUE;
             for (Move move : availableMoves) {
-                game.makeMove(move);
-                int eval = minimax(game, depth - 1, false);
-                game.undoMove(move);
+                var backUpState = GameState.getDeepCopy(gameEngine.getCurrentState());
+                gameEngine.makeMove(move);
+                int eval = minimax(depth - 1, Player.getOpponent(player));
+                gameEngine.setState(backUpState);
+                gameEngine.getCurrentState().printCurrentState();
                 maxEval = Math.max(maxEval, eval);
             }
             return maxEval;
         } else {
             int minEval = Integer.MAX_VALUE;
             for (Move move : availableMoves) {
-                game.makeMove(move);
-                int eval = minimax(game, depth - 1, true);
-                game.undoMove(move);
+                var backUpState = GameState.getDeepCopy(gameEngine.getCurrentState());
+                gameEngine.makeMove(move);
+                int eval = minimax(depth - 1, Player.getOpponent(player));
+                gameEngine.setState(backUpState);
+                gameEngine.getCurrentState().printCurrentState();
                 minEval = Math.min(minEval, eval);
             }
             return minEval;
         }
     }
-}
+    //White is always maximizing Player
+    private boolean isMaximizingPlayer(String colour) {
+        if(colour.equals("B")) {
+            return false;
+        }
+        if(colour.equals("W")) {
+            return true;
+        }
+        else{
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private int minimizingStrategy
 }

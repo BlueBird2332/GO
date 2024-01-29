@@ -1,5 +1,5 @@
 package org.models;
 
-public record Move(int row, int column) {
+public record Move(int row, int column, Player player) {
 
 }

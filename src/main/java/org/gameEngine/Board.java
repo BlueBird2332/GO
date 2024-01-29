@@ -12,7 +12,6 @@ public class Board {
         return board;
     }
     public Board(int size){
-        // To do implement size
         this.board = new String[size][size];
         for (String[] strings : board) {
             Arrays.fill(strings, CellContents.EMPTY.value());
@@ -65,6 +64,8 @@ public class Board {
     }
 
     public boolean compareBoards(Board board){
+        //printBoard();
+        //board.printBoard();
         for(int i = 0; i < board.rowSize(); i++){
             for(int j = 0; j< board.colSize(); j++){
                 if(!Objects.equals(this.getCellContent(i, j), board.getCellContent(i, j))){
@@ -74,4 +75,18 @@ public class Board {
         }
         return true;
     }
+    public static Board getEmptyBoard(int size){
+        String[][] board = new String[size][size];
+        for(int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                board[i][j] = CellContents.EMPTY.value();
+            }
+        }
+        return new Board(board);
+    }
+
+    public Board deepCopy(){
+        return new Board(this.copyBoard());
+    }
+
 }

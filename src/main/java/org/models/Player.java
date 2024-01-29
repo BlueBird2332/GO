@@ -9,4 +9,7 @@ public enum Player {
     public String value(){
         return this.value;
     }
+    public static Player getOpponent(Player p){
+        return p == BLACK? WHITE : BLACK;
+    }
 }

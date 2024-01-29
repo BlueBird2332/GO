@@ -1,32 +1,31 @@
 package org.gameEngine;
 
-import org.models.CellContents;
-import org.models.Group;
-import org.models.Player;
-import org.models.Stone;
-
+import org.models.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public final class GameEngine {
-    public Board board ;
-    public void printBoard(){
-        this.board.printBoard();
-    }
+    private GameState currentState;
+    public Board board;
+
     private int whiteCaptured = 0;
     private int blackCaptured = 0;
 
     private List<Board> koHistory;
     public GameEngine(int size){
         initializeBoard(size);
+        currentState = new GameState(new Board(size), 0, 0, Player.BLACK, koHistory);
     };
 
     public void initializeBoard(int size) {
         this.board = new Board(size);
         koHistory = new ArrayList<>(List.of(new Board(board.colSize()), new Board(board.colSize())));
     }
-
+    private boolean isOccupied(int row, int column){
+        return !board.getCellContent(row, column).equals(CellContents.EMPTY.value());
+    }
 
     private String[][] initializeCapturing(Stone stone, String[][] copiedBoard){
          var neighbours = getNeighbours(stone.row(), stone.column());
@@ -36,7 +35,7 @@ public final class GameEngine {
          for(Stone n : neighbours){
              boolean temp = searchDFSToCapture(n, copiedBoard);
              hasNoBreaths = hasNoBreaths || temp;
-             //System.out.println(iteraition);
+             //System.out.println(iteration);
              iteraition++;
          }
          //System.out.println(hasNoBreaths);
@@ -146,37 +145,31 @@ public final class GameEngine {
     }
 
 
-    public void makeMove(int row, int column, Player player){
-        if(isMoveAllowed(row, column, player.value())){
-            if(player == Player.BLACK){
-                board.modifyBoard(row, column, CellContents.BLACK.value());
-                updateHistory();
-                performCapturing(new Stone(row, column, CellContents.WHITE.value()));
-            } else {
-                board.modifyBoard(row, column, CellContents.WHITE.value());
-                updateHistory();
-                performCapturing(new Stone(row, column, CellContents.BLACK.value()));
-            }
+    public void makeMove(Move move) {
+        if (isMoveAllowed(move.row(), move.column(), move.player().value())) {
+            board.modifyBoard(move.row(), move.column(), move.player().value());
+            performCapturing(new Stone(move.row(), move.column(), Player.getOpponent(move.player()).value()));
+            updateHistory();
+            updateStatus(move);
         }
     }
 
 
     public boolean isMoveAllowed(int row, int column, String colour){
-        return isMoveWithinBounds(row, column) && !isMoveSuicide(row, column, colour) && !isMoveAgainstKo(row, column, colour);
+        return  isMoveWithinBounds(row, column) &&
+                !isMoveSuicide(row, column, colour) &&
+                !isMoveAgainstKo(row, column, colour) &&
+                !isOccupied(row, column);
     }
 
     private boolean isMoveWithinBounds(int row, int column){
-        if (!Objects.equals(board.getCellContent(row, column), CellContents.EMPTY.value())) {
-            System.out.println("cannot make a move");
-            return false;
-        } else {
-            return true;
-        }
+        return Objects.equals(board.getCellContent(row, column), CellContents.EMPTY.value());
     }
 
-    private void getState(){
+    public int getState(){
         int blacksPoints = getEnclosedArea(CellContents.BLACK.value()) + whiteCaptured;
         int whitesPoints  = getEnclosedArea(CellContents.WHITE.value()) + blackCaptured;
+        return whitesPoints - blacksPoints;
     }
 
 
@@ -234,13 +227,15 @@ public final class GameEngine {
         var copyBoard = board.copyBoard();
         copyBoard[row][column] = colour;
         for(Board b : koHistory){
-            b.printBoard();
+            //b.printBoard();
+
             var temp = new Board(copyBoard);
             if(b.compareBoards(temp)){
-                //"Move Against Ko"
+                System.out.println("Move Against Ko");
                 return true;
             }
         }
+        System.out.println("-".repeat(20));
         return false;
     }
     private String getOpponentColour(String colour){
@@ -287,6 +282,43 @@ public final class GameEngine {
     private void updateHistory(){
         koHistory.set(1, koHistory.get(0));
         koHistory.set(0, new Board(this.board.copyBoard()));
+    }
+    public void printBoard(){
+        this.board.printBoard();
+    }
+
+    public List<Move> getAvailableMoves(Board board, Player player){
+        List<Move> moves = new ArrayList<>();
+        var colour = player.value();
+        for(int i = 0; i < board.rowSize(); i++){
+            for(int j = 0; j < board.colSize(); j++){
+                if(isMoveAllowed(i, j, colour)){
+                    moves.add(new Move(i, j, player));
+                }
+            }
+        }
+        System.out.println(moves.toString());
+        return moves;
+    }
+
+    private void updateStatus(Move move){
+        currentState = new GameState(new Board(this.board.copyBoard()), whiteCaptured, blackCaptured,
+                Player.getOpponent(move.player()), this.koHistory);
+    }
+
+    public GameState getCurrentState() {
+        return currentState;
+    }
+
+    public void setState(GameState currentState){
+        this.currentState = GameState.getDeepCopy(currentState);
+        updateLocalVariables(currentState);
+    }
+    private void updateLocalVariables(GameState state){
+        this.board = state.board().deepCopy();
+        this.whiteCaptured = state.whitesCaptured();
+        this.blackCaptured = state.blacksCaptured();
+        this.koHistory = state.koList();
     }
 }
 
