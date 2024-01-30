@@ -13,14 +13,13 @@ public class Main {
         //testKo();
         //testNormal();
         //botTest();
-//        System.out.println(gameEngine.getEnclosedArea(CellContents.BLACK.value()));
-//        var encoded = BoardConverter.encode(gameEngine.board.getBoard());
-//        System.out.println(encoded);
-//        var decoded = BoardConverter.decode(encoded);
-//        System.out.println(Arrays.deepToString(decoded));
-//        Stone stone1 = new Stone(1, 1, "B");
-//        Stone stone2 = new Stone(1, 1, "B");
-//        System.out.println(stone1.equals(stone2));
+        GameEngine ge = new GameEngine(19);
+        Board oldBoard = createTestBoardSingle();
+        ge.board = oldBoard;
+        ge.printBoard();
+        ge.makeMove(new Move(0,9, BLACK));
+        ge.printBoard();
+
 
 
     }
@@ -106,4 +105,20 @@ public class Main {
         gameEngine.printBoard();
 
     }
+
+    private static Board createTestBoardSingle() {
+
+
+        Board board = new Board(19);
+        board.modifyBoard(2,3, CellContents.BLACK.value());
+        board.modifyBoard(2,5, CellContents.BLACK.value());
+        board.modifyBoard(2,4, CellContents.BLACK.value());
+        board.modifyBoard(1,5, CellContents.BLACK.value());
+        board.modifyBoard(1,3, CellContents.BLACK.value());
+        board.modifyBoard(1,4, CellContents.WHITE.value());
+        board.modifyBoard(0,5, CellContents.WHITE.value());
+        board.printBoard();
+        return board;
+    }
+
 }

@@ -3,8 +3,10 @@ package org.gameEngine;
 import org.Board.Board;
 import org.models.CaptureResult;
 import org.models.CellContents;
+import org.models.Group;
 import org.models.Stone;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import static org.gameEngine.MoveHelper.getNeighbours;
@@ -14,44 +16,39 @@ import static org.models.Stone.hasLiberties;
 
 public class CaptureHelper {
     public static int getEnclosedArea(String colour, Board board){
+
         Board copyBoard = new Board(board.copyBoard());
         int totalArea = 0;
 
         for (int i = 0; i < copyBoard.rowSize(); i++) {
             for (int j = 0; j < copyBoard.colSize(); j++) {
                 if (Objects.equals(copyBoard.getCellContent(i, j), CellContents.EMPTY.value())) {
-                    var temp = new Board(copyBoard.copyBoard());
-                    if(!markAreaDFS(temp, new Stone(i, j, CellContents.EMPTY.value()), getOpponentColour(colour))){
-                        var cr = mergeBoards(copyBoard, temp);
-                        totalArea += cr.count();
-                    };
+                    var temp = Group.getGroup(new Stone(i, j, CellContents.EMPTY.value()), board);
+                    boolean foundEnemy = false;
+                    for (Stone stone: temp) {
+                        copyBoard.modifyBoard(stone.row(), stone.column(), VISITED.value());
+                        if(MoveHelper.getNeighbours(stone.row(), stone.column(), copyBoard).stream().anyMatch(neighbour -> Objects.equals(neighbour.contents(), getOpponentColour(colour)))) {
+                            foundEnemy = true;
+                        }
+                    }
+
+                    if(!foundEnemy){
+                        totalArea += temp.size();
+                    }
                 }
             }
         }
         return totalArea;
+
     }
 
-    private static boolean markAreaDFS(Board board, Stone stone, String opponnentsColour){
-        // To DO
-        board.modifyBoard(stone.row(), stone.column(), VISITED.value());
-        boolean foundOpponentFlag = false;
-        for(Stone neighbour : getNeighbours(stone.row(), stone.column(),  board)){
-            if(neighbour.contents().equals(stone.contents())){
-                //Another empty stone - continue search
-                foundOpponentFlag = foundOpponentFlag || markAreaDFS(board, neighbour, opponnentsColour);
-            }
-            if(neighbour.contents().equals(opponnentsColour)){
-                foundOpponentFlag = true;
-            }
-        }
-        return foundOpponentFlag;
-    }
     public static void performCapturing(Stone stone, Board oldBoard){
         var board = initializeCapturing(stone, oldBoard.deepCopy());
         if(board != null){
             var results = mergeBoards(oldBoard, board);
         }
     }
+
 
     private static Board initializeCapturing(Stone stone, Board copiedBoard){
         var neighbours = getNeighbours(stone.row(), stone.column(), copiedBoard);
@@ -103,6 +100,7 @@ public class CaptureHelper {
                 }
             }
         }
+        oldBoard.printBoard();
         return new CaptureResult(count, colour);
     }
 }

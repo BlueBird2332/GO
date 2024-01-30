@@ -39,7 +39,7 @@ public class MoveHelper {
 
     public static boolean isMoveAllowed(Move move, Board board){
         return  isMoveWithinBounds(move, board) &&
-                !isMoveSuicide(move, board) &&
+                !isMoveSuicide(move, board)&&
                 !isMoveAgainstKo(move, board) &&
                 !isOccupied(move.row(), move.column(), board);
     }
@@ -60,7 +60,9 @@ public class MoveHelper {
         Stone stone = new Stone(move.row(), move.column(), move.player().value());
         var backup = board.deepCopy();
         backup.addStone(stone);
-        return canCapture(stone, backup) && canBeCaptured(stone, backup);
+        System.out.println("can capture = " + canCapture(stone, backup));
+        System.out.println("can be captured = " + canBeCaptured(stone, backup));
+        return canCapture(stone, backup) && canBeCaptured(stone, backup) &&!canCaptureMany(stone, backup);
     }
     private static boolean canCapture(Stone stone, Board board){
         for(Stone neighbour : MoveHelper.getNeighbours(stone.row(), stone.column(), board)){
@@ -74,9 +76,21 @@ public class MoveHelper {
         return false;
     }
 
+    private static boolean canCaptureMany(Stone stone, Board board){
+        for(Stone neighbour : MoveHelper.getNeighbours(stone.row(), stone.column(), board)){
+            if(neighbour.contents().equals(getOpponentColour(stone.contents()))){
+                var group = Group.getGroup(neighbour, board);
+                if((Group.groupBreathCount(new Group(group), board) == 0) && group.size() > 1){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private static boolean canBeCaptured(Stone stone, Board board){
         var group = Group.getGroup(stone, board);
-        return Group.groupBreathCount(new Group(group), board) >= 1;
+        return Group.groupBreathCount(new Group(group), board) <= 1;
     }
 
     private static boolean isMoveSuicide(Move move, Board board) {
@@ -88,7 +102,7 @@ public class MoveHelper {
 
 
     private static boolean isMoveWithinBounds(Move move, Board board){
-        return Objects.equals(board.getCellContent(move.row(), move.column()), CellContents.EMPTY.value());
+        return move.row() >= 0 && move.row() < board.rowSize() && move.column() >=0 && move.column() < board.colSize();
     }
 
     private static boolean isOccupied(int row, int column, Board board){
