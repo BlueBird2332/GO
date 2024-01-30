@@ -1,6 +1,6 @@
 package org.example.clientServer.protocols;
 
-import org.example.game.Player;
+import org.example.models.Player;
 
 import java.io.Serializable;
 

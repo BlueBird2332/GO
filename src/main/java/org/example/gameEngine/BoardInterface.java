@@ -1,7 +1,8 @@
-package org.example.game;
+package org.example.gameEngine;
+
+import org.example.models.Constants;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 public interface BoardInterface extends Serializable {
 

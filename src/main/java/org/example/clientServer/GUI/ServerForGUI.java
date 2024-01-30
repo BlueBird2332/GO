@@ -1,9 +1,8 @@
 package org.example.clientServer.GUI;
 
 import org.example.clientServer.ServerInterface;
-import org.example.clientServer.Session;
 import org.example.clientServer.SessionInterface;
-import org.example.game.Player;
+import org.example.models.Player;
 
 import java.io.*;
 import java.net.*;
@@ -28,6 +27,7 @@ public class ServerForGUI implements ServerInterface {
             ServerSocket serverSocket = new ServerSocket(8000);
             System.out.println("Server started at socket 8000\n");
             int sessionNum = 1;
+            //TODO: nie róbmy serwera ciągłego
             while (true) {
 
                 System.out.println("Waiting for players to join session " + sessionNum + "\n");

@@ -16,16 +16,15 @@ import javafx.scene.Scene;
 import org.example.clientServer.ClientInterface;
 import org.example.clientServer.protocols.ClientToServerMessage;
 import org.example.clientServer.protocols.ServerToClientMessage;
-import org.example.game.Board;
-import org.example.game.BoardGUI;
-import org.example.game.Constants;
-import org.example.game.Player;
+import org.example.gameEngine.Board;
+import org.example.gameEngine.BoardGUI;
+import org.example.models.Constants;
+import org.example.models.Player;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class ClientGUI extends Application implements ClientInterface  {
     Socket socket;
@@ -62,7 +61,12 @@ public class ClientGUI extends Application implements ClientInterface  {
     public ClientGUI() {
     }
 
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+            this.thread.interrupt();
 
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -293,7 +297,7 @@ public class ClientGUI extends Application implements ClientInterface  {
 
             while (continueToPlay) {
                 if (me == Player.BLACK) {
-                    while(true){
+                    while(continueToPlay){
                         waitForPlayerAction(); //dopóki jest enable to move to czekaj
                         if(sendMove() == false) { //jeżeli był zły move
                             System.out.println("Illegal move, try again."); //to zrób enable znowu i super
@@ -307,7 +311,7 @@ public class ClientGUI extends Application implements ClientInterface  {
                 }
                 else if (me == Player.WHITE) {
                     recieveInfoFromServer();
-                    while(true) {
+                    while(continueToPlay) {
                         waitForPlayerAction();
                         if(sendMove() == true) {
                             break;
@@ -331,6 +335,7 @@ public class ClientGUI extends Application implements ClientInterface  {
     private void waitForPlayerAction() throws InterruptedException {
         while (board.checkMoveEnable()) {
             System.out.println(board.checkMoveEnable());
+            //boolean i = board.checkMoveEnable();
         }
         System.out.println("DOCZEKAŁEM SIE");
     }
@@ -343,7 +348,6 @@ public class ClientGUI extends Application implements ClientInterface  {
         }
         else if (board.getRowSelected() == -2 && board.getColumnSelected() == -2) {
             toServer.writeObject (new ClientToServerMessage(ClientToServerMessage.Type.SURRENDER, rowSelected,columnSelected, me));
-            continueToPlay = false;
         }
         else if (board.getRowSelected() == -1 && board.getColumnSelected() == -1) {
             toServer.writeObject (new ClientToServerMessage(ClientToServerMessage.Type.PASS, rowSelected,columnSelected, me));
@@ -393,7 +397,7 @@ public class ClientGUI extends Application implements ClientInterface  {
             ServerToClientMessage message = (ServerToClientMessage) fromServer.readObject();
 
             if (message.type() == ServerToClientMessage.Type.GAME_FINISHED) {
-
+                System.out.println("Zakonczenie gry");
                 continueToPlay = false;
                 if(message.player() == me) {
                     Platform.runLater(() -> {

@@ -1,6 +1,7 @@
-package org.example.clientServer;
+package org.example.clientServer.deprecated;
 
-import org.example.game.Player;
+import org.example.clientServer.ServerInterface;
+import org.example.models.Player;
 
 import java.io.*;
 import java.net.*;
@@ -9,7 +10,7 @@ import java.net.*;
  *
  * @author aid
  */
-public class Server implements ServerInterface{
+public class Server implements ServerInterface {
 
 
     /*

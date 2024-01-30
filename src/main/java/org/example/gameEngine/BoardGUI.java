@@ -1,12 +1,13 @@
-package org.example.game;
+package org.example.gameEngine;
 
 import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-
-import java.util.Arrays;
+import org.example.models.CellContents;
+import org.example.models.Constants;
+import org.example.models.Stone;
 
 public class BoardGUI implements BoardInterface{
 
@@ -40,6 +41,17 @@ public class BoardGUI implements BoardInterface{
     }
     public void modifyBoard(int row, int column, Constants constant){
         this.board.modifyBoard(row,column, constant);
+    }
+
+    public int colSize(){
+        return this.board.colSize();
+    }
+
+    public int rowSize(){
+        return this.board.rowSize();
+    }
+    public void modifyBoard(int row, int column, String constant){
+        this.board.modifyBoard(row, column, constant);
     }
     public void modifyBoard(Board newBoard){
         this.board = newBoard;
@@ -80,6 +92,10 @@ public class BoardGUI implements BoardInterface{
 
 
     }
+    public void addStone(Stone stone){
+        this.board.addStone(stone);
+    }
+
 
     public Pane showBoard(double windowWidth, double windowHeight) {
         Pane root = new Pane();
@@ -112,6 +128,9 @@ public class BoardGUI implements BoardInterface{
                 stone.setCenterX(j * tileSize + tileSize / 2 + widthOffset);
                 stone.setCenterY(i * tileSize + tileSize / 2 + heightOffset);
                 if(board.getCellContent(row, col).equals(Constants.EMPTY.value())){
+                    stone.setFill(Color.GRAY);
+                }
+                else if(board.getCellContent(row, col).equals(CellContents.VISITED.value())){
                     stone.setFill(Color.GRAY);
                 }
                 else if(board.getCellContent(row, col).equals(Constants.BLACK.value())){

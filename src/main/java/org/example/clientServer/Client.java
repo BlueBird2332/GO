@@ -2,9 +2,9 @@ package org.example.clientServer;
 
 import org.example.clientServer.protocols.ClientToServerMessage;
 import org.example.clientServer.protocols.ServerToClientMessage;
-import org.example.game.Board;
-import org.example.game.Constants;
-import org.example.game.Player;
+import org.example.gameEngine.Board;
+import org.example.models.Constants;
+import org.example.models.Player;
 
 import java.net.*;
 import java.io.IOException;

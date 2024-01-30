@@ -1,7 +1,7 @@
 package org.example;
 
-import org.example.game.Board;
-import org.example.game.Constants;
+import org.example.gameEngine.Board;
+import org.example.models.Constants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

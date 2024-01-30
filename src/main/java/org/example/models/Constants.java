@@ -1,4 +1,4 @@
-package org.example.game;
+package org.example.models;
 
 public enum Constants {
     WHITE("W"),
