@@ -54,7 +54,7 @@
       <recent name="C:\Users\rafal\OneDrive\Pulpit\Studia\sem3\TP\GoGame\src\main\java\org\example\bot" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ClientGUI with fx">
+  <component name="RunManager" selected="Application.ClientGUI with fx2">
     <configuration name="ClientGUI with fx" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="org.example.clientServer.GUI.ClientGUI" />
       <module name="GoGame" />
@@ -104,8 +104,7 @@
       <option name="presentableId" value="Default" />
       <updated>1706542553705</updated>
       <workItem from="1706542554671" duration="23375000" />
-      <workItem from="1706615520137" duration="20542000" />
-      <workItem from="1706649998014" duration="304000" />
+      <workItem from="1706615520137" duration="19526000" />
     </task>
     <task id="LOCAL-00001" summary="rfl: merged parts&#10; - capturing full of bugs&#10; - some minor changes to glue old and new versions together">
       <option name="closed" value="true" />
