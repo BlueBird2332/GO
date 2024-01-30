@@ -52,9 +52,9 @@ public final class GameEngine {
         }
     }
     public int getState(){
-        int blacksPoints = -getEnclosedArea(CellContents.BLACK.value(), this.board.deepCopy()) - whiteCaptured;
+        int blacksPoints = getEnclosedArea(CellContents.BLACK.value(), this.board.deepCopy()) + whiteCaptured;
         int whitesPoints  = getEnclosedArea(CellContents.WHITE.value(), this.board.deepCopy()) + blackCaptured;
-        return blacksPoints + whitesPoints;
+        return whitesPoints - blacksPoints;
     }
 
     public int getBlackPoints() {

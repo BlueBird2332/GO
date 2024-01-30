@@ -5,6 +5,7 @@ import org.models.GameState;
 import org.models.Move;
 import org.models.Player;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Function;
@@ -31,35 +32,32 @@ public class Bot {
         Move bestMove = null;
         int bestValue = isMaximizingPlayer(player)? Integer.MIN_VALUE : Integer.MAX_VALUE;
         this.minMaxStrategy = minMaxStrategies.get(player);
+        //System.out.println(availableMoves);
 
         for (Move move : availableMoves) {
             var backUpState = GameState.getDeepCopy(gameEngine.getCurrentState());
 
             //gameEngine.getCurrentState().printCurrentState();
             gameEngine.makeMove(move);
-            gameEngine.getCurrentState().printCurrentState();
+            //gameEngine.getCurrentState().printCurrentState();
             int value = minimax(depth - 1, player);
-            System.out.println(value);
+            //System.out.println(value);
             gameEngine.setState(backUpState);
            // gameEngine.getCurrentState().printCurrentState();
 
-        if(minMaxStrategy.compare(bestValue, value)){
-            bestMove = move;
-            bestValue = value;
-        }
-
-//            if (value > bestValue) {
-//                bestValue = value;
-//
-//            }
-
+            //System.out.println(bestValue);
+            if(minMaxStrategy.compare(bestValue, value)){
+                bestMove = move;
+                System.out.println(bestMove);
+                bestValue = value;
+            }
         }
 
         return bestMove;
     }
 
     private int minimax(int depth, Player player) {
-        System.out.println("here");
+
         if (depth == 0) {
             return gameEngine.getState();
             //To do implement strategies
@@ -74,7 +72,7 @@ public class Bot {
                 gameEngine.makeMove(move);
                 int eval = minimax(depth - 1, Player.getOpponent(player));
                 gameEngine.setState(backUpState);
-                gameEngine.getCurrentState().printCurrentState();
+                //gameEngine.getCurrentState().printCurrentState();
                 maxEval = Math.max(maxEval, eval);
             }
             return maxEval;
@@ -85,7 +83,7 @@ public class Bot {
                 gameEngine.makeMove(move);
                 int eval = minimax(depth - 1, Player.getOpponent(player));
                 gameEngine.setState(backUpState);
-                gameEngine.getCurrentState().printCurrentState();
+                //gameEngine.getCurrentState().printCurrentState();
                 minEval = Math.min(minEval, eval);
             }
             return minEval;

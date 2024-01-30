@@ -1,8 +1,12 @@
 package org.sampleDatabase;
 
+import org.gameEngine.GameEngine;
+import org.models.GameState;
 import org.models.GameStatus;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.models.Move;
+import org.models.Player;
 
 import java.util.List;
 
@@ -12,65 +16,29 @@ public class Main {
         try {
             // Initialize Hibernate
             HibernateUtil.getSessionFactory();
-
+            DatabaseUtils dbUtils = new DatabaseUtils();
+            int gameId = 4;
             // Add a move to the database
-            addMove("Initial Board State", "Player X", 2, 3);
+            dbUtils.createTable(gameId);
 
-            // Retrieve and print moves from the database
-            retrieveAndPrintMoves();
+            GameEngine ge = new GameEngine(19);
+            ge.makeMove(new Move(1,0, Player.BLACK));
+            var state = ge.getCurrentState();
+            dbUtils.addMove(gameId, state);
+            ge.makeMove(new Move(2,0, Player.WHITE));
+            state = ge.getCurrentState();
+            dbUtils.addMove(gameId, state);
+
+            var game = dbUtils.getGame(4);
+            for(GameState g : game){
+                g.printCurrentState();
+            }
+
+            var move = dbUtils.getSingleMove(4, 1);
+            move.printCurrentState();
         } finally {
             // Shutdown Hibernate
             HibernateUtil.shutdown();
-        }
-    }
-
-    private static void addMove(String board, String nextPlayer, int blacksCaptured, int whitesCaptured) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction transaction = null;
-
-        try {
-            transaction = session.beginTransaction();
-
-            // Create a new Move object
-            GameStatus gameStatus= new GameStatus(board, nextPlayer, blacksCaptured, whitesCaptured);
-
-            // Save the move to the database
-            session.persist(gameStatus);
-
-            // Commit the transaction
-            transaction.commit();
-            System.out.println("Move added successfully.");
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-    }
-
-    private static void retrieveAndPrintMoves() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-
-        try {
-            // Retrieve moves from the database
-            @SuppressWarnings("unchecked")
-            List<GameStatus> gameStatusList = session.createQuery("FROM Move").list();
-
-            // Print retrieved moves
-            System.out.println("Retrieved Moves:");
-            for (GameStatus gameStatus : gameStatusList) {
-                System.out.println("ID: " + gameStatus.getId() +
-                        ", Board: " + gameStatus.getBoard() +
-                        ", Next Move: " + gameStatus.getNextPlayer() +
-                        ", Blacks Captured: " + gameStatus.getBlacksCaptured() +
-                        ", Whites Captured: " + gameStatus.getWhitesCaptured());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            session.close();
         }
     }
 }

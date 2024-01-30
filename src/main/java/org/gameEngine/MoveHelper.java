@@ -95,7 +95,8 @@ public class MoveHelper {
         Stone stone = new Stone(move.row(), move.column(), move.player().value());
         var backup = board.deepCopy();
         backup.addStone(stone);
-        return !canCapture(stone, backup) && canBeCaptured(stone, backup);
+        boolean hasZeroBreaths = Group.groupBreathCount(new Group(Group.getGroup(stone, backup)), board) == 0;
+        return !canCapture(stone, backup) && hasZeroBreaths;
     }
 
 

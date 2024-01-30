@@ -58,6 +58,7 @@ public class CaptureHelper {
         for(Stone n : neighbours) {
             boolean temp = searchDFSToCapture(n, copiedBoard);
             hasNoBreaths = hasNoBreaths || temp;
+            System.out.println(n + "" + hasNoBreaths);
         }
         if(hasNoBreaths) {
             return copiedBoard;

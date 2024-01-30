@@ -61,7 +61,7 @@ public record Group(List<Stone> stones) {
         for (Stone neighbor : MoveHelper.getNeighbours(currentStone.row(), currentStone.column(), board)) {
             if (!visited.contains(neighbor) && neighbor.contents().equals(currentStone.contents())) {
                 // Recursively explore unvisited neighbors with the same contents
-                System.out.println(neighbor);
+                // System.out.println(neighbor);
                 dfsSearch(neighbor, board, group, visited);
             }
         }
