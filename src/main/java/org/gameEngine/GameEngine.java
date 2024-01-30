@@ -38,25 +38,31 @@ public final class GameEngine {
     }
 
     public void makeMove(Move move) {
-        System.out.println("Move made");
         if (MoveHelper.isMoveAllowed(move, this.board)) {
             //make Move
             board.modifyBoard(move.row(), move.column(), move.player().value());
-            printBoard();
-            System.out.println("Move made");
             //check for capturing
-            performCapturing(new Stone(move.row(), move.column(), Player.getOpponent(move.player()).value()), this.board);
+            CaptureResult result = performCapturing(new Stone(move.row(), move.column(), Player.getOpponent(move.player()).value()), this.board);
             //update results
+            if(result != null){
+                updateResults(result);
+            }
+
             updateStatus(move);
-        }
-        else{
-            System.out.println("Can't make move");
         }
     }
     public int getState(){
-        int blacksPoints = getEnclosedArea(CellContents.BLACK.value(), this.board.deepCopy()) - whiteCaptured;
+        int blacksPoints = -getEnclosedArea(CellContents.BLACK.value(), this.board.deepCopy()) - whiteCaptured;
         int whitesPoints  = getEnclosedArea(CellContents.WHITE.value(), this.board.deepCopy()) + blackCaptured;
-        return whitesPoints - blacksPoints;
+        return blacksPoints + whitesPoints;
+    }
+
+    public int getBlackPoints() {
+        return getEnclosedArea(CellContents.BLACK.value(), this.board.deepCopy()) + whiteCaptured;
+    }
+
+    public int getWhitePoints() {
+        return getEnclosedArea(CellContents.WHITE.value(), this.board.deepCopy()) + blackCaptured;
     }
     public void printBoard(){
         this.board.printBoard();
@@ -66,8 +72,9 @@ public final class GameEngine {
         currentState = new GameState(new Board(this.board.copyBoard()), whiteCaptured, blackCaptured,
                 Player.getOpponent(move.player()));
     }
+
     public GameState getCurrentState() {
-        return currentState;
+        return GameState.getDeepCopy(this.currentState);
     }
     public void setState(GameState currentState){
         this.currentState = GameState.getDeepCopy(currentState);
@@ -77,6 +84,10 @@ public final class GameEngine {
         this.board = state.board().deepCopy();
         this.whiteCaptured = state.whitesCaptured();
         this.blackCaptured = state.blacksCaptured();
+    }
+    public void setBoard(Board board){
+        this.board = board;
+        this.currentState = new GameState(board, currentState.whitesCaptured(), currentState.blacksCaptured(), currentState.nextPlayer());
     }
 }
 

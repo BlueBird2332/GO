@@ -60,8 +60,6 @@ public class MoveHelper {
         Stone stone = new Stone(move.row(), move.column(), move.player().value());
         var backup = board.deepCopy();
         backup.addStone(stone);
-        System.out.println("can capture = " + canCapture(stone, backup));
-        System.out.println("can be captured = " + canBeCaptured(stone, backup));
         return canCapture(stone, backup) && canBeCaptured(stone, backup) &&!canCaptureMany(stone, backup);
     }
     private static boolean canCapture(Stone stone, Board board){
@@ -108,6 +106,4 @@ public class MoveHelper {
     private static boolean isOccupied(int row, int column, Board board){
         return !board.getCellContent(row, column).equals(CellContents.EMPTY.value());
     }
-
-
 }
