@@ -14,11 +14,43 @@ public class Main {
         //testNormal();
         //botTest();
         GameEngine ge = new GameEngine(19);
-        Board oldBoard = createTestBoardSingle();
-        ge.board = oldBoard;
+        ge.makeMove(new Move(0,2, BLACK));
         ge.printBoard();
-        ge.makeMove(new Move(0,9, BLACK));
+        ge.makeMove(new Move(0,4, BLACK));
         ge.printBoard();
+        ge.makeMove(new Move(1,0, BLACK));
+        ge.printBoard();
+        ge.makeMove(new Move(1,3, BLACK));
+        ge.printBoard();
+        ge.makeMove(new Move(2,2, BLACK));
+        ge.printBoard();
+        ge.makeMove(new Move(3,1, BLACK));
+        ge.printBoard();
+        ge.makeMove(new Move(4,0, BLACK));
+        ge.printBoard();
+        ge.makeMove(new Move(1,1, WHITE));
+        ge.printBoard();
+        ge.makeMove(new Move(1,2, WHITE));
+        ge.printBoard();
+        ge.makeMove(new Move(2,1, WHITE));
+        ge.printBoard();
+        ge.makeMove(new Move(2,0, WHITE));
+        ge.printBoard();
+        ge.makeMove(new Move(3,0, WHITE));
+        ge.printBoard();
+
+        ge.makeMove(new Move(0,1, WHITE));
+        ge.printBoard();
+        ge.makeMove(new Move(0,0, BLACK));
+        ge.printBoard();
+
+
+
+//        Board oldBoard = createTestBoardSingle();
+//        ge.board = oldBoard;
+//        ge.printBoard();
+//        ge.makeMove(new Move(0,9, BLACK));
+//        ge.printBoard();
 
 
 

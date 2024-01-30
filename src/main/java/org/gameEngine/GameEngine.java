@@ -42,7 +42,7 @@ public final class GameEngine {
             //make Move
             board.modifyBoard(move.row(), move.column(), move.player().value());
             //check for capturing
-            CaptureResult result = performCapturing(new Stone(move.row(), move.column(), Player.getOpponent(move.player()).value()), this.board);
+            CaptureResult result = performCapturing(new Stone(move.row(), move.column(), move.player().value()), this.board);
             //update results
             if(result != null){
                 updateResults(result);

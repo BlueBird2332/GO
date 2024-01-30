@@ -6,10 +6,10 @@ import org.models.CellContents;
 import org.models.Group;
 import org.models.Stone;
 
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 
 import static org.gameEngine.MoveHelper.getNeighbours;
+import static org.models.CellContents.EMPTY;
 import static org.models.CellContents.VISITED;
 import static org.models.Stone.getOpponentColour;
 import static org.models.Stone.hasLiberties;
@@ -45,9 +45,7 @@ public class CaptureHelper {
     public static CaptureResult performCapturing(Stone stone, Board oldBoard){
         var board = initializeCapturing(stone, oldBoard.deepCopy());
         CaptureResult results = null;
-        if(board != null){
-            results = mergeBoards(oldBoard, board);
-        }
+        results = mergeBoards(oldBoard, board);
         return results;
     }
 
@@ -55,17 +53,28 @@ public class CaptureHelper {
     private static Board initializeCapturing(Stone stone, Board copiedBoard){
         var neighbours = getNeighbours(stone.row(), stone.column(), copiedBoard);
         boolean hasNoBreaths = false;
+        var foundGroups = new HashSet<List<Stone>>();
         for(Stone n : neighbours) {
-            boolean temp = searchDFSToCapture(n, copiedBoard);
-            hasNoBreaths = hasNoBreaths || temp;
-            System.out.println(n + "" + hasNoBreaths);
+            System.out.println("here");
+            if(n.contents().equals(Stone.getOpponentColour(stone.contents()))){
+                var group = Group.getGroup(n, copiedBoard);
+                System.out.println(group);
+                foundGroups.add(group);
+            }
         }
-        if(hasNoBreaths) {
-            return copiedBoard;
+        for(List<Stone> group : foundGroups){
+            if(Group.groupBreathCount(new Group(group), copiedBoard) == 0){
+                copiedBoard = captureGroup(group, copiedBoard);
+            }
         }
-        return null;
+        return copiedBoard;
     }
-
+    private static Board captureGroup(List<Stone> group, Board copiedBoard){
+        for(Stone s : group){
+            copiedBoard.modifyBoard(s.row(), s.column(), EMPTY.value());
+        }
+        return copiedBoard;
+    }
     private static boolean searchDFSToCapture(Stone stone, Board board){
 
         if (hasLiberties(getNeighbours(stone.row(), stone.column(), board))) {

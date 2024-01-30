@@ -14,11 +14,12 @@ class CaptureHelperTest {
     void testPerformCapturingSingle() {
         //Arrange
         Board oldBoard = createTestBoardSingle();
-        Stone stone = new Stone(0,4, CellContents.WHITE.value());
+        Stone stone = new Stone(0,4, CellContents.BLACK.value());
         Board expectedResult = createBoardAfterCaptureSingle();
 
         //Act
         CaptureHelper.performCapturing(stone, oldBoard);
+        oldBoard.printBoard();
 
         //Assert
         assertTrue(expectedResult.compareBoards(oldBoard));

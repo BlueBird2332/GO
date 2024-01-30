@@ -32,7 +32,6 @@ public class Bot {
         Move bestMove = null;
         int bestValue = isMaximizingPlayer(player)? Integer.MIN_VALUE : Integer.MAX_VALUE;
         this.minMaxStrategy = minMaxStrategies.get(player);
-        //System.out.println(availableMoves);
 
         for (Move move : availableMoves) {
             var backUpState = GameState.getDeepCopy(gameEngine.getCurrentState());
