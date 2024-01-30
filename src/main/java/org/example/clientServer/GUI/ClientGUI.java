@@ -68,6 +68,7 @@ public class ClientGUI extends Application implements ClientInterface  {
         super.stop();
             this.thread.interrupt();
 
+
     }
 
     @Override

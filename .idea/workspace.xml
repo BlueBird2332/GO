@@ -4,20 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4eec659d-c50b-47d9-b675-e3788c5d785d" name="Changes" comment="rfl: bot &amp; GUI c.d.&#10; - bugs fixed - bot, capturing, suicides">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="4eec659d-c50b-47d9-b675-e3788c5d785d" name="Changes" comment="rfl: GUI c.d.&#10; - improved visuals&#10; - changed protocols">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/bot/ClientBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/bot/ClientBot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/ClientGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/ClientGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/SessionForGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/SessionForGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/deprecated/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/deprecated/Session.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/protocols/ServerToClientMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/protocols/ServerToClientMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/Board.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/BoardGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/BoardGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/CaptureHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/CaptureHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/GameEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/MoveHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/MoveHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/models/GameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/models/GameState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/models/Group.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/models/Group.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +107,7 @@
       <option name="presentableId" value="Default" />
       <updated>1706542553705</updated>
       <workItem from="1706542554671" duration="23375000" />
-      <workItem from="1706615520137" duration="12332000" />
+      <workItem from="1706615520137" duration="17505000" />
     </task>
     <task id="LOCAL-00001" summary="rfl: merged parts&#10; - capturing full of bugs&#10; - some minor changes to glue old and new versions together">
       <option name="closed" value="true" />
@@ -134,7 +125,15 @@
       <option name="project" value="LOCAL" />
       <updated>1706588853268</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="rfl: GUI c.d.&#10; - improved visuals&#10; - changed protocols">
+      <option name="closed" value="true" />
+      <created>1706630574860</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1706630574860</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -144,6 +143,7 @@
     <MESSAGE value="rfl: merged parts&#10; - capturing full of bugs&#10; - some minor changes to glue old and new versions together" />
     <MESSAGE value="rfl: bot &amp; GUI c.d.&#10; - lepsze zarządzanie wątkami&#10; - podłączenie bota do gui (sam bot ma problemy)" />
     <MESSAGE value="rfl: bot &amp; GUI c.d.&#10; - bugs fixed - bot, capturing, suicides" />
-    <option name="LAST_COMMIT_MESSAGE" value="rfl: bot &amp; GUI c.d.&#10; - bugs fixed - bot, capturing, suicides" />
+    <MESSAGE value="rfl: GUI c.d.&#10; - improved visuals&#10; - changed protocols" />
+    <option name="LAST_COMMIT_MESSAGE" value="rfl: GUI c.d.&#10; - improved visuals&#10; - changed protocols" />
   </component>
 </project>

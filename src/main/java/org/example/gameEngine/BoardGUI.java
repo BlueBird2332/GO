@@ -151,12 +151,26 @@ public class BoardGUI implements BoardInterface{
                 else if(board.getCellContent(row, col).equals(Constants.WHITE.value())){
                     stone.setFill(Color.WHITE);
                 }
-
+                //choosing stone
                 stone.setOnMouseClicked(event -> {
                     if(checkMoveEnable()){
                         chooseStone(row, col);
                     }
 
+                });
+                // appear on enty
+                stone.setOnMouseEntered(event -> {
+                    if(checkMoveEnable() && (board.getCellContent(row,col).equals(CellContents.EMPTY.value()))){
+                        stone.setFill(Color.GRAY);
+                        stone.setOpacity(0.5);
+                    }
+                });
+
+                // disappear on exited
+                stone.setOnMouseExited(event -> {
+                    if(checkMoveEnable() && (board.getCellContent(row,col).equals(CellContents.EMPTY.value()))){
+                        stone.setFill(Color.TRANSPARENT);
+                    }
                 });
 
                 root.getChildren().add(stone);

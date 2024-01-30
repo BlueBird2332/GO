@@ -206,7 +206,7 @@ public class ClientBot implements ClientInterface {
                     else {
                         System.out.println("BOT: I LOST!!!");
                     }
-                    thread.interrupt();
+                    this.thread.interrupt();
                 }
                 else if(message.type() == ServerToClientMessage.Type.MOVE_MADE) {
                     board = message.board();
