@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4eec659d-c50b-47d9-b675-e3788c5d785d" name="Changes" comment="rfl: GUI c.d.&#10; - improved visuals&#10; - changed protocols">
+    <list default="true" id="4eec659d-c50b-47d9-b675-e3788c5d785d" name="Changes" comment="rfl: GUI c.d.&#10; - improved visuals again&#10; - added UML Diagram">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/bot/ClientBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/bot/ClientBot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/ClientGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/ClientGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/BoardGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/BoardGUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,14 +47,14 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\rafal\OneDrive\Pulpit\Studia\sem3\TP\GoGame\UMLDiagrams" />
       <recent name="C:\Users\rafal\OneDrive\Pulpit\Studia\sem3\TP\GoGame\src\main\java\org\example\sampleDatabase" />
       <recent name="C:\Users\rafal\OneDrive\Pulpit\Studia\sem3\TP\GoGame\src\main\java\org\example\gameEngine" />
       <recent name="C:\Users\rafal\OneDrive\Pulpit\Studia\sem3\TP\GoGame\src\main\java\org\example\models" />
       <recent name="C:\Users\rafal\OneDrive\Pulpit\Studia\sem3\TP\GoGame\src\main\java\org\example\bot" />
-      <recent name="C:\Users\rafal\OneDrive\Pulpit\Studia\sem3\TP\GoGame\src\main\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ClientGUI with fx2">
+  <component name="RunManager" selected="Application.ClientGUI with fx">
     <configuration name="ClientGUI with fx" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="org.example.clientServer.GUI.ClientGUI" />
       <module name="GoGame" />
@@ -107,7 +104,8 @@
       <option name="presentableId" value="Default" />
       <updated>1706542553705</updated>
       <workItem from="1706542554671" duration="23375000" />
-      <workItem from="1706615520137" duration="17505000" />
+      <workItem from="1706615520137" duration="20542000" />
+      <workItem from="1706649998014" duration="304000" />
     </task>
     <task id="LOCAL-00001" summary="rfl: merged parts&#10; - capturing full of bugs&#10; - some minor changes to glue old and new versions together">
       <option name="closed" value="true" />
@@ -133,7 +131,15 @@
       <option name="project" value="LOCAL" />
       <updated>1706630574860</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="rfl: GUI c.d.&#10; - improved visuals again&#10; - added UML Diagram">
+      <option name="closed" value="true" />
+      <created>1706638276967</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1706638276967</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -144,6 +150,7 @@
     <MESSAGE value="rfl: bot &amp; GUI c.d.&#10; - lepsze zarządzanie wątkami&#10; - podłączenie bota do gui (sam bot ma problemy)" />
     <MESSAGE value="rfl: bot &amp; GUI c.d.&#10; - bugs fixed - bot, capturing, suicides" />
     <MESSAGE value="rfl: GUI c.d.&#10; - improved visuals&#10; - changed protocols" />
-    <option name="LAST_COMMIT_MESSAGE" value="rfl: GUI c.d.&#10; - improved visuals&#10; - changed protocols" />
+    <MESSAGE value="rfl: GUI c.d.&#10; - improved visuals again&#10; - added UML Diagram" />
+    <option name="LAST_COMMIT_MESSAGE" value="rfl: GUI c.d.&#10; - improved visuals again&#10; - added UML Diagram" />
   </component>
 </project>
