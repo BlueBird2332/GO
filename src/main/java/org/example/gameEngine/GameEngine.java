@@ -43,13 +43,19 @@ public final class GameEngine {
     }
 
     public void makeMove(Move move) {
+        //System.out.println("Move made");
         if (MoveHelper.isMoveAllowed(move, this.board)) {
             //make Move
-            this.board.modifyBoard(move.row(), move.column(), move.player().value());
+            board.modifyBoard(move.row(), move.column(), move.player().value());
+            //printBoard();
+            //System.out.println("Move made");
             //check for capturing
             performCapturing(new Stone(move.row(), move.column(), Player.getOpponent(move.player()).value()), this.board);
             //update results
             updateStatus(move);
+        }
+        else{
+            //System.out.println("Can't make move");
         }
     }
 

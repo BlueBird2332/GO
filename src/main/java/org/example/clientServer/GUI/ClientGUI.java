@@ -13,11 +13,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import org.example.bot.Bot;
+import org.example.bot.ClientBot;
 import org.example.clientServer.ClientInterface;
 import org.example.clientServer.protocols.ClientToServerMessage;
 import org.example.clientServer.protocols.ServerToClientMessage;
 import org.example.gameEngine.Board;
 import org.example.gameEngine.BoardGUI;
+import org.example.gameEngine.GameEngine;
 import org.example.models.Constants;
 import org.example.models.Player;
 
@@ -43,9 +46,10 @@ public class ClientGUI extends Application implements ClientInterface  {
     private ObjectInputStream fromServer;
     private ObjectOutputStream toServer;
     private Thread thread;
+    private boolean botGameFlag=false;
 
     private boolean continueToPlay = true;
-    private boolean myTurn = false;
+    private final Object lock = new Object();
 
 
     //TODO:
@@ -72,20 +76,6 @@ public class ClientGUI extends Application implements ClientInterface  {
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("GO - player client");
-        /*board = new BoardGUI(9);
-
-        Pane top = board.showBoard(800, 800);
-
-        BorderPane test = new BorderPane();
-        test.setTop(top);
-        test.setCenter(boardPane);
-        this.primaryStage.setScene(new Scene(test, 800, 800));
-
-
-        board.modifyBoard(0,0,Constants.BLACK);
-        boardPane = board.showBoard(primaryStage.getWidth(), primaryStage.getHeight()-30.0);
-*/
-
         this.primaryStage.setScene(makeInitScene(this.primaryStage));
         this.primaryStage.show();
 
@@ -112,7 +102,7 @@ public class ClientGUI extends Application implements ClientInterface  {
                 //jezeli bialy, to dowiedz sie na jakiej tablicy grasz
                 try{
                     Integer boardSize = (Integer) fromServer.readObject();
-                    board = new BoardGUI(boardSize);
+                    board = new BoardGUI(boardSize, lock);
                     primaryStage.setScene(makePlayingScene(primaryStage));
                 }
                 catch (IOException | ClassNotFoundException ex){
@@ -125,9 +115,9 @@ public class ClientGUI extends Application implements ClientInterface  {
         });
         zBotem.setOnAction(event ->{
             connectToServer();
+            botGameFlag=true;
             primaryStage.setScene(makeChoosingSizeScene(primaryStage));
-            //TODO:
-            //  - trzeba jakos podłączyć bota
+
         });
 
         center.getChildren().addAll(zPrzeciwnikiem, zBotem);
@@ -147,7 +137,7 @@ public class ClientGUI extends Application implements ClientInterface  {
         Button confirmButton = new Button("Potwierdz wybor");
         confirmButton.setOnAction(ev -> {
             Integer wybranyRozmiar = wybierzRozmiarComboBox.getValue();
-            board = new BoardGUI(wybranyRozmiar);
+            board = new BoardGUI(wybranyRozmiar, lock);
             try {
                 toServer.writeObject(wybranyRozmiar);
             }
@@ -196,10 +186,12 @@ public class ClientGUI extends Application implements ClientInterface  {
 
         rootPane.setTop(topLabel);
 
-        //TODO: CZY TEN THREAD TUTAJ TO W OGÓLE DOBRY POMYSŁ???
+
         this.thread = new Thread(this);
         thread.start();
-        //Platform.runLater - runningGame
+        if(botGameFlag){
+            ClientBot botOpponent = new ClientBot();
+        }
 
         return new Scene(rootPane,800,800);
     }
@@ -332,13 +324,33 @@ public class ClientGUI extends Application implements ClientInterface  {
 
         }
     }
+
+
+    public void waitForConditionChange() throws InterruptedException {
+        synchronized (lock) {
+            while (board.checkMoveEnable()) {
+                lock.wait();  // Wątek zostaje zawieszony i czeka na notify()
+            }
+        }
+    }
     private void waitForPlayerAction() throws InterruptedException {
-        while (board.checkMoveEnable()) {
-            System.out.println(board.checkMoveEnable());
+        /*while (board.checkMoveEnable()) {
+
+            //System.out.println(board.checkMoveEnable());
             //boolean i = board.checkMoveEnable();
+        }*/
+        try{
+            waitForConditionChange();
+        }
+        catch(InterruptedException ex){
+            System.err.println(ex);
         }
         System.out.println("DOCZEKAŁEM SIE");
     }
+
+
+
+
 
     private boolean sendMove() throws IOException, ClassNotFoundException {
         System.out.println("Jestem w sendMove");

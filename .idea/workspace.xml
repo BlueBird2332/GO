@@ -4,48 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4eec659d-c50b-47d9-b675-e3788c5d785d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/bot/Bot.java" afterDir="false" />
+    <list default="true" id="4eec659d-c50b-47d9-b675-e3788c5d785d" name="Changes" comment="rfl: merged parts&#10; - capturing full of bugs&#10; - some minor changes to glue old and new versions together">
       <change afterPath="$PROJECT_DIR$/src/main/java/org/example/bot/ClientBot.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/bot/MaxStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/bot/MinMaxStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/bot/MinStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/BoardConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/CaptureHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/MoveHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/models/CaptureResult.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/models/CellContents.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/models/GameState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/models/GameStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/models/Group.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/models/Move.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/models/Stone.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/sampleDatabase/BoardConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/sampleDatabase/HibernateUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/sampleDatabase/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ServerMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ServerMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/Client1.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/ClientInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/ClientInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/bot/Bot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/bot/Bot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/ClientGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/ClientGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/ServerForGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/ServerForGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/SessionForGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/SessionForGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/deprecated/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/deprecated/Session.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/protocols/ClientToServerMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/protocols/ClientToServerMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/protocols/ServerToClientMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/protocols/ServerToClientMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/game/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/game/BoardGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/BoardGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/game/BoardInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/BoardInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/game/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/models/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/game/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/GameEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/game/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/models/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/BoardTransferingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/BoardTransferingTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/BoardGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/BoardGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/CaptureHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/CaptureHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/GameEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/MoveHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/MoveHelper.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,11 +110,24 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1706542553705</updated>
-      <workItem from="1706542554671" duration="17278000" />
+      <workItem from="1706542554671" duration="22995000" />
     </task>
+    <task id="LOCAL-00001" summary="rfl: merged parts&#10; - capturing full of bugs&#10; - some minor changes to glue old and new versions together">
+      <option name="closed" value="true" />
+      <created>1706583104632</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1706583104632</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="rfl: merged parts&#10; - capturing full of bugs&#10; - some minor changes to glue old and new versions together" />
+    <option name="LAST_COMMIT_MESSAGE" value="rfl: merged parts&#10; - capturing full of bugs&#10; - some minor changes to glue old and new versions together" />
   </component>
 </project>

@@ -15,16 +15,21 @@ public class BoardGUI implements BoardInterface{
     private boolean moveEnable=true;
     private int rowSelected=-3;
     private  int columnSelected=-3;
+    private final Object lock;
 
-    public BoardGUI(int size){
+
+    public BoardGUI(int size, Object lock){
         board = new Board(size);
+        this.lock=lock;
     }
     public BoardGUI(String[][] board) {
         this.board = new Board(board);
+        lock = new Object();
     }
     public BoardGUI(Board board){
         this.board = board;
         moveEnable=false;
+        lock=new Object();
     }
 
     public String[][] getBoard() {
@@ -63,7 +68,10 @@ public class BoardGUI implements BoardInterface{
         moveEnable = true;
     }
     public void stopMoving(){
-        moveEnable = false;
+        synchronized (lock) {
+            moveEnable = false;
+            lock.notify();  // Budzi jeden wątek, który czeka na notify()
+        }
     }
 
     public void setRowSelected(int rowSelected){

@@ -39,7 +39,7 @@ public class MoveHelper {
 
     public static boolean isMoveAllowed(Move move, Board board){
         return  isMoveWithinBounds(move, board) &&
-                !isMoveSuicide(move, board) &&
+                !isMoveSuicide(move, board)&&
                 !isMoveAgainstKo(move, board) &&
                 !isOccupied(move.row(), move.column(), board);
     }
@@ -60,19 +60,27 @@ public class MoveHelper {
         Stone stone = new Stone(move.row(), move.column(), move.player().value());
         var backup = board.deepCopy();
         backup.addStone(stone);
-        /*if(canCapture(stone, backup) && canBeCaptured(stone, backup)){
-            System.out.println("move againstKO");
-        }
-        else{
-            System.out.println("move NOT againstKO");
-        }*/
-        return canCapture(stone, backup) && canBeCaptured(stone, backup);
+        System.out.println("can capture = " + canCapture(stone, backup));
+        System.out.println("can be captured = " + canBeCaptured(stone, backup));
+        return canCapture(stone, backup) && canBeCaptured(stone, backup) &&!canCaptureMany(stone, backup);
     }
     private static boolean canCapture(Stone stone, Board board){
         for(Stone neighbour : MoveHelper.getNeighbours(stone.row(), stone.column(), board)){
             if(neighbour.contents().equals(getOpponentColour(stone.contents()))){
                 var group = Group.getGroup(neighbour, board);
                 if(Group.groupBreathCount(new Group(group), board) == 0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean canCaptureMany(Stone stone, Board board){
+        for(Stone neighbour : MoveHelper.getNeighbours(stone.row(), stone.column(), board)){
+            if(neighbour.contents().equals(getOpponentColour(stone.contents()))){
+                var group = Group.getGroup(neighbour, board);
+                if((Group.groupBreathCount(new Group(group), board) == 0) && group.size() > 1){
                     return true;
                 }
             }
@@ -89,40 +97,15 @@ public class MoveHelper {
         Stone stone = new Stone(move.row(), move.column(), move.player().value());
         var backup = board.deepCopy();
         backup.addStone(stone);
-        /*if(!canCapture(stone, backup) && canBeCaptured(stone, backup)){
-            if(!canCapture(stone, backup)){
-                System.out.println("cannot capture");
-            }
-            if(canBeCaptured(stone, backup)){
-                System.out.println("can be captured");
-                backup.printBoard();
-            }
-            System.out.println("move is SUISIDE");
-        }
-        else{
-            System.out.println("move NOT suicide");
-        }*/
         return !canCapture(stone, backup) && canBeCaptured(stone, backup);
     }
 
 
     private static boolean isMoveWithinBounds(Move move, Board board){
-        /*if(Objects.equals(board.getCellContent(move.row(), move.column()), CellContents.EMPTY.value())){
-            System.out.println("move is within bounds");
-        }
-        else{
-            System.out.println("move NOT within bounds");
-        }*/
-        return Objects.equals(board.getCellContent(move.row(), move.column()), CellContents.EMPTY.value());
+        return move.row() >= 0 && move.row() < board.rowSize() && move.column() >=0 && move.column() < board.colSize();
     }
 
     private static boolean isOccupied(int row, int column, Board board){
-        /*if(!board.getCellContent(row, column).equals(CellContents.EMPTY.value())){
-            System.out.println("move is occupied");
-        }
-        else{
-            System.out.println("move NOT occupied");
-        }*/
         return !board.getCellContent(row, column).equals(CellContents.EMPTY.value());
     }
 

@@ -14,6 +14,7 @@ public class Bot {
 
     private GameEngine gameEngine;
     private MinMaxStrategy minMaxStrategy;
+    private boolean coninueToRunFlag = true;
 
     {
         minMaxStrategies = new HashMap<>();
@@ -28,11 +29,20 @@ public class Bot {
     public void receiveMove(Board board, Player whoMoved){
         gameEngine.setState(new GameState(board.deepCopy(), 0,0, Player.getOpponent(whoMoved)));
     }
+    public void finish(){
+        coninueToRunFlag=false;
+    }
 
 
     public Move findBestMove(int depth, Player player) {
+        if(!coninueToRunFlag){
+            return new Move(-1, -1,player);
+        }
+        //TODO:
+        // to tak średnio działa, w ogóle
         List<Move> availableMoves = MoveHelper.getAvailableMoves(gameEngine.board, player);
-        Move bestMove = null;
+        //Move bestMove = null;
+        Move bestMove = availableMoves.get(0);
         int bestValue = isMaximizingPlayer(player)? Integer.MIN_VALUE : Integer.MAX_VALUE;
         this.minMaxStrategy = minMaxStrategies.get(player);
 
@@ -41,9 +51,9 @@ public class Bot {
 
             //gameEngine.getCurrentState().printCurrentState();
             gameEngine.makeMove(move);
-            gameEngine.getCurrentState().printCurrentState();
+            //gameEngine.getCurrentState().printCurrentState();
             int value = minimax(depth - 1, player);
-            System.out.println(value);
+            //System.out.println(value);
             gameEngine.setState(backUpState);
             // gameEngine.getCurrentState().printCurrentState();
 
@@ -63,7 +73,7 @@ public class Bot {
     }
 
     private int minimax(int depth, Player player) {
-        System.out.println("here");
+        //System.out.println("here");
         if (depth == 0) {
             return gameEngine.getState();
             //To do implement strategies
@@ -78,7 +88,7 @@ public class Bot {
                 gameEngine.makeMove(move);
                 int eval = minimax(depth - 1, Player.getOpponent(player));
                 gameEngine.setState(backUpState);
-                gameEngine.getCurrentState().printCurrentState();
+                //gameEngine.getCurrentState().printCurrentState();
                 maxEval = Math.max(maxEval, eval);
             }
             return maxEval;
