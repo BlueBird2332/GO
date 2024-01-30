@@ -22,7 +22,7 @@ public class DatabaseUtils implements IDataBaseUtil {
             @SuppressWarnings("unchecked")
             List<GameStatus> gameStatusList = session.createNativeQuery("SELECT * FROM " + tableName, GameStatus.class)
                     .getResultList();
-            //System.out.println(gameStatusList.get(0).getBoard());
+
             for (GameStatus gameStatus : gameStatusList) {
                 allMoves.add(StatusStateConverter.getGameStateFromStatus(gameStatus));
             }
@@ -64,12 +64,10 @@ public class DatabaseUtils implements IDataBaseUtil {
             transaction = session.beginTransaction();
 
             // Construct the dynamic table name
-            String tableName = "GameStatus" + gameId;
+            String tableName = "gamestatus" + gameId;
 
-            // Create a new move object
             GameStatus gameStatus = StatusStateConverter.getGameStatusFromState(gameState);
 
-            // Save the move to the database using native SQL
             session.createNativeQuery("INSERT INTO " + tableName + " (board, nextPlayer, blacksCaptured, whitesCaptured) VALUES (?, ?, ?, ?)")
                     .setParameter(1, gameStatus.getBoard())
                     .setParameter(2, gameStatus.getNextPlayer())
@@ -102,7 +100,6 @@ public class DatabaseUtils implements IDataBaseUtil {
                     + "whitesCaptured INT"
                     + ")";
 
-            // Execute the SQL statement to create the table
             session.createNativeQuery(createTableSQL).executeUpdate();
 
             transaction.commit();
