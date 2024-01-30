@@ -1,8 +1,8 @@
 package org.gameEngine;
 
 
-import org.example.models.*;
 import org.models.*;
+
 
 import java.util.ArrayList;
 import java.util.List;

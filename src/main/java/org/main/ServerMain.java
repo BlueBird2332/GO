@@ -1,4 +1,4 @@
-package org;
+package org.main;
 
 import org.clientServer.GUI.ServerForGUI;
 import org.clientServer.ServerInterface;

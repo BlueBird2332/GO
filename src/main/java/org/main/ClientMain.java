@@ -1,4 +1,4 @@
-package org;
+package org.main;
 
 import org.clientServer.ClientInterface;
 import org.clientServer.Client;

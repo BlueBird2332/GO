@@ -1,6 +1,6 @@
 package org.bot;
 
-import org.example.gameEngine.*;
+import org.gameEngine.*;
 import org.gameEngine.Board;
 import org.gameEngine.GameEngine;
 import org.gameEngine.MoveHelper;

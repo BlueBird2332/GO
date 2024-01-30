@@ -1,4 +1,4 @@
-package org;
+package org.board;
 
 import org.gameEngine.Board;
 import org.models.Constants;
