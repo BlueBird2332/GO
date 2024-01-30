@@ -7,10 +7,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import org.example.bot.Bot;
@@ -35,7 +33,7 @@ public class ClientGUI extends Application implements ClientInterface  {
     private String myToken = " ", otherToken = " ";
     private Player me;
     private BoardGUI board;
-    private Label topLabel;
+    private Label topLabel, white, whitePoints, black, blackPoints;
     private BorderPane rootPane;
     private Pane boardPane;
     private Stage primaryStage;
@@ -96,6 +94,7 @@ public class ClientGUI extends Application implements ClientInterface  {
             connectToServer();
             if(me == Player.BLACK) {
                 //jezeli czarny, to wybierz rozmiar tablicy do gry
+                primaryStage.setTitle("GO - gracz czarny");
                 primaryStage.setScene(makeChoosingSizeScene(primaryStage));
             }
             else if( me == Player.WHITE) {
@@ -103,6 +102,7 @@ public class ClientGUI extends Application implements ClientInterface  {
                 try{
                     Integer boardSize = (Integer) fromServer.readObject();
                     board = new BoardGUI(boardSize, lock);
+                    primaryStage.setTitle("GO - gracz bialy");
                     primaryStage.setScene(makePlayingScene(primaryStage));
                 }
                 catch (IOException | ClassNotFoundException ex){
@@ -166,8 +166,11 @@ public class ClientGUI extends Application implements ClientInterface  {
 
         HBox bottom = new HBox(20);
         bottom.setAlignment(Pos.CENTER);
+        bottom.setBackground(new Background(new BackgroundFill(Color.ROSYBROWN,null,null)));
         Button surrender = new Button("Poddaj sie");
+        surrender.setStyle("-fx-background-color: #f4a460; -fx-text-fill: black;");
         Button pass = new Button("Pas");
+        pass.setStyle("-fx-background-color: #f4a460; -fx-text-fill: black;");
 
         surrender.setOnAction(event -> {
             if(board.checkMoveEnable()){
@@ -182,9 +185,31 @@ public class ClientGUI extends Application implements ClientInterface  {
         bottom.getChildren().addAll(pass, surrender);
         rootPane.setBottom(bottom);
 
-        topLabel = new Label("JAKIS TEKST");
 
-        rootPane.setTop(topLabel);
+        HBox top = new HBox(20);
+        top.setAlignment(Pos.CENTER);
+        top.setBackground(new Background(new BackgroundFill(Color.ROSYBROWN,null,null)));
+
+        white = new Label("Punkty białych: ");
+        whitePoints = new Label("0");
+        white.setBackground(new Background(new BackgroundFill(Color.ROSYBROWN,null,null)));
+        whitePoints.setBackground(new Background(new BackgroundFill(Color.ROSYBROWN,null,null)));
+
+        topLabel = new Label("T");
+        topLabel.setAlignment(Pos.CENTER);
+        topLabel.setStyle("-fx-background-color: #f4a460; -fx-text-fill: black;");
+                //setBackground(new Background(new BackgroundFill(Color.BROWN,null,null)));
+
+        black = new Label("Punkty czarnych: ");
+        blackPoints = new Label("0");
+        black.setBackground(new Background(new BackgroundFill(Color.ROSYBROWN,null,null)));
+        blackPoints.setBackground(new Background(new BackgroundFill(Color.ROSYBROWN,null,null)));
+
+
+        top.getChildren().addAll(white, whitePoints, topLabel, black, blackPoints);
+
+
+        rootPane.setTop(top);
 
 
         this.thread = new Thread(this);
@@ -356,6 +381,7 @@ public class ClientGUI extends Application implements ClientInterface  {
         System.out.println("Jestem w sendMove");
 
         if (board.getRowSelected() == -3 && board.getColumnSelected() == -3) {
+            System.err.println("Zły move");
             return false;
         }
         else if (board.getRowSelected() == -2 && board.getColumnSelected() == -2) {
@@ -375,11 +401,14 @@ public class ClientGUI extends Application implements ClientInterface  {
             board.stopMoving();
             Board receivedBoard = feedback.board();
             board.modifyBoard(receivedBoard);
-            board.getBoardBoard().printBoard();
+            System.out.println("Wysłany ruch i otrzymany board");
+            board.printBoard();
             Platform.runLater(() -> {
                 boardPane = board.showBoard(this.primaryStage.getWidth(), this.primaryStage.getHeight()-60.0);
                 this.rootPane.setCenter(boardPane);
                 topLabel.setText("Oczekiwanie na ruch przeciwnika");
+                whitePoints.setText(String.valueOf(feedback.gameState().whitesCaptured()));
+                blackPoints.setText(String.valueOf(feedback.gameState().blacksCaptured()));
             });
 
 
@@ -408,33 +437,47 @@ public class ClientGUI extends Application implements ClientInterface  {
         try {
             ServerToClientMessage message = (ServerToClientMessage) fromServer.readObject();
 
+
             if (message.type() == ServerToClientMessage.Type.GAME_FINISHED) {
                 System.out.println("Zakonczenie gry");
                 continueToPlay = false;
                 if(message.player() == me) {
                     Platform.runLater(() -> {
                         topLabel.setText("KONIEC GRY! WYGRANA!");
+                        whitePoints.setText(String.valueOf(message.gameState().whitesCaptured()));
+                        blackPoints.setText(String.valueOf(message.gameState().blacksCaptured()));
                     });
                 }
                 else if(message.player() == null){
                     Platform.runLater(() -> {
                         topLabel.setText("KONIEC GRY! REMIS!");
+                        whitePoints.setText(String.valueOf(message.gameState().whitesCaptured()));
+                        blackPoints.setText(String.valueOf(message.gameState().blacksCaptured()));
                     });
                 }
                 else {
                     Platform.runLater(() -> {
                         topLabel.setText("KONIEC GRY! PRZEGRANA!");
+                        whitePoints.setText(String.valueOf(message.gameState().whitesCaptured()));
+                        blackPoints.setText(String.valueOf(message.gameState().blacksCaptured()));
                     });
                 }
             }
             else if(message.type() == ServerToClientMessage.Type.MOVE_MADE) {
                 Board receivedBoard = message.board();
                 board.modifyBoard(receivedBoard);
+                System.out.println("Otrzymany board:");
+                board.printBoard();
+                message.gameState().printCurrentState();
+                System.out.println("my white captured: "+ message.gameState().whitesCaptured());
+                System.out.println("my black captured: "+ message.gameState().blacksCaptured());
                 board.okToMove();
                 Platform.runLater(() -> {
                     boardPane = board.showBoard(this.primaryStage.getWidth(), this.primaryStage.getHeight()-60.0);
                     this.rootPane.setCenter(boardPane);
                     topLabel.setText("TWOJA KOLEJ");
+                    whitePoints.setText(String.valueOf(message.gameState().whitesCaptured()));
+                    blackPoints.setText(String.valueOf(message.gameState().blacksCaptured()));
                 });
 
 

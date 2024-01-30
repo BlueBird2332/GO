@@ -41,11 +41,13 @@ public class CaptureHelper {
 
     }
 
-    public static void performCapturing(Stone stone, Board oldBoard){
+    public static CaptureResult performCapturing(Stone stone, Board oldBoard){
         var board = initializeCapturing(stone, oldBoard.deepCopy());
+        CaptureResult results = null;
         if(board != null){
-            var results = mergeBoards(oldBoard, board);
+            results = mergeBoards(oldBoard, board);
         }
+        return results;
     }
 
 
@@ -99,7 +101,6 @@ public class CaptureHelper {
                 }
             }
         }
-        oldBoard.printBoard();
         return new CaptureResult(count, colour);
     }
 }

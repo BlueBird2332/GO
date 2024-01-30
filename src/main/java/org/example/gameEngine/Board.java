@@ -20,6 +20,7 @@ public class Board implements BoardInterface {
     }
     public Board (String[][] board) {
         this.board = board;
+        size = colSize();
     }
 
     public String[][] getBoard() {

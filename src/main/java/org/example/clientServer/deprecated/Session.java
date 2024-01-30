@@ -3,7 +3,9 @@ package org.example.clientServer.deprecated;
 import org.example.clientServer.SessionInterface;
 import org.example.clientServer.protocols.ClientToServerMessage;
 import org.example.clientServer.protocols.ServerToClientMessage;
+import org.example.gameEngine.Board;
 import org.example.gameEngine.GameEngine;
+import org.example.models.GameState;
 import org.example.models.Player;
 
 import java.io.*;
@@ -73,27 +75,41 @@ public class Session implements SessionInterface {
                         toPlayer2.reset();
 
                         if(move.type() == ClientToServerMessage.Type.SURRENDER) {
-                            toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, null, null));
+                            toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL,
+                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE)
+                                    /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, null));
                             guardian = false;
-                            toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED, gameEngine.getBoard(), Player.WHITE));
-                            toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED, gameEngine.getBoard(), Player.WHITE));
+                            toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED,
+                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE)
+                                    /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, Player.WHITE));
+                            toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED,
+                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE)
+                                    /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, Player.WHITE));
                             gameFinished = true;
 
                         }
                         else if(move.type() == ClientToServerMessage.Type.PASS) {
-                            toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, null, null));
+                            toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL,
+                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE)
+                                    /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, null));
                             guardian = false;
                             passCounter++;
                             if(passCounter >=2) {
                                 //dTODO - what does that do?
                                 Player winner = gameEngine.winner();
-                                toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED, gameEngine.getBoard(), winner));
-                                toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED, gameEngine.getBoard(), winner));
+                                toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED,
+                                        new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE)
+                                        /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, winner));
+                                toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED,
+                                        new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE)
+                                        /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, winner));
                                 gameFinished = true;
 
                             }
                             else{
-                                toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.OTHER_PLAYER_PASSED, gameEngine.getBoard(), Player.BLACK));
+                                toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.OTHER_PLAYER_PASSED,
+                                        new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE)
+                                        /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, Player.BLACK));
                             }
 
                         }
@@ -104,8 +120,12 @@ public class Session implements SessionInterface {
                                     gameEngine.makeMove(move.row(), move.column(), move.player());
                                     //gameEngine.printBoard();
                                     gameEngine.getBoard().printBoard();
-                                    toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, null, null));
-                                    toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_MADE, gameEngine.getBoard(), Player.BLACK));
+                                    toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL,
+                                            new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE)
+                                            /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, null));
+                                    toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_MADE,
+                                            new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE)
+                                            /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, Player.BLACK));
                                     guardian = false;
                                 }
                                 else {
@@ -138,26 +158,40 @@ public class Session implements SessionInterface {
                         toPlayer2.reset();
 
                         if(move.type() == ClientToServerMessage.Type.SURRENDER) {
-                            toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, null, null));
+                            toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL,
+                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK)
+                                    /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, null));
                             guardian = false;
-                            toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED, gameEngine.getBoard(), Player.BLACK));
-                            toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED, gameEngine.getBoard(), Player.BLACK));
+                            toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED,
+                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK)
+                                    /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, Player.BLACK));
+                            toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED,
+                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK)
+                                    /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, Player.BLACK));
                             gameFinished = true;
 
                         }
                         else if(move.type() == ClientToServerMessage.Type.PASS) {
-                            toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, null, null));
+                            toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL,
+                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK)
+                                    /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, null));
                             guardian = false;
                             passCounter++;
                             if(passCounter >=2) {
                                 Player winner = gameEngine.winner();
-                                toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED, gameEngine.getBoard(), winner));
-                                toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED, gameEngine.getBoard(), winner));
+                                toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED,
+                                        new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK)
+                                        /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, winner));
+                                toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED,
+                                        new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK)
+                                        /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, winner));
                                 gameFinished = true;
 
                             }
                             else{
-                                toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.OTHER_PLAYER_PASSED, gameEngine.getBoard(), Player.WHITE));
+                                toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.OTHER_PLAYER_PASSED,
+                                        new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK)
+                                        /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, Player.WHITE));
                             }
 
                         }
@@ -167,8 +201,12 @@ public class Session implements SessionInterface {
                                 if(gameEngine.isMoveAllowed(move.row(), move.column(), move.player())) {
                                     gameEngine.makeMove(move.row(), move.column(), move.player());
                                     gameEngine.printBoard();
-                                    toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL, null, null));
-                                    toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_MADE, gameEngine.getBoard(), Player.WHITE));
+                                    toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL,
+                                            new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK)
+                                            /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, null));
+                                    toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_MADE,
+                                            new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK)
+                                            /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, Player.WHITE));
                                     guardian = false;
                                 }
                                 else {

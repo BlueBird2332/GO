@@ -32,6 +32,7 @@ public class BoardGUI implements BoardInterface{
         lock=new Object();
     }
 
+
     public String[][] getBoard() {
         return this.board.getBoard();
     }
@@ -46,6 +47,9 @@ public class BoardGUI implements BoardInterface{
     }
     public void modifyBoard(int row, int column, Constants constant){
         this.board.modifyBoard(row,column, constant);
+    }
+    public void printBoard(){
+        this.board.printBoard();
     }
 
     public int colSize(){
@@ -136,10 +140,10 @@ public class BoardGUI implements BoardInterface{
                 stone.setCenterX(j * tileSize + tileSize / 2 + widthOffset);
                 stone.setCenterY(i * tileSize + tileSize / 2 + heightOffset);
                 if(board.getCellContent(row, col).equals(Constants.EMPTY.value())){
-                    stone.setFill(Color.GRAY);
+                    stone.setFill(Color.TRANSPARENT);
                 }
                 else if(board.getCellContent(row, col).equals(CellContents.VISITED.value())){
-                    stone.setFill(Color.GRAY);
+                    stone.setFill(Color.TRANSPARENT);
                 }
                 else if(board.getCellContent(row, col).equals(Constants.BLACK.value())){
                     stone.setFill(Color.BLACK);
