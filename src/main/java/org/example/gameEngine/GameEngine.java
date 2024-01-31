@@ -47,7 +47,7 @@ public final class GameEngine {
             //make Move
             board.modifyBoard(move.row(), move.column(), move.player().value());
             //check for capturing
-            CaptureResult result = performCapturing(new Stone(move.row(), move.column(), Player.getOpponent(move.player()).value()), this.board);
+            CaptureResult result = performCapturing(new Stone(move.row(), move.column(), move.player().value()), this.board);
             //update results
             if(result != null){
                 updateResults(result);
@@ -56,13 +56,10 @@ public final class GameEngine {
             updateStatus(move);
         }
     }
-
-
-
     public int getState(){
-        int blacksPoints = -getEnclosedArea(CellContents.BLACK.value(), this.board.deepCopy()) - whiteCaptured;
+        int blacksPoints = getEnclosedArea(CellContents.BLACK.value(), this.board.deepCopy()) + whiteCaptured;
         int whitesPoints  = getEnclosedArea(CellContents.WHITE.value(), this.board.deepCopy()) + blackCaptured;
-        return blacksPoints + whitesPoints;
+        return whitesPoints - blacksPoints;
     }
     public int getBlackPoints() {
         return getEnclosedArea(CellContents.BLACK.value(), this.board.deepCopy()) + whiteCaptured;

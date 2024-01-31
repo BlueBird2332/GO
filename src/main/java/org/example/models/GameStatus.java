@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 
 
 
-@Entity
-@Table(name = "Moves") //To Do Moves<GameID>
+@Entity(name = "GameStatus")
+//@Table(name = "Move" + gameId) //To Do Moves<GameID>
 public class GameStatus {
 
     @Id

@@ -156,6 +156,9 @@ public class ClientBot implements ClientInterface {
         private void waitForPlayerAction() throws InterruptedException {
             //TODO: no ogólnie to nie zawsze tam mi ruchy zwraca, więc niefajnie, do porawy
             Move sugestedMove = bot.findBestMove(2,me);
+            if (sugestedMove == null){
+                sugestedMove = new Move(-1,-1,me);
+            }
             rowSelected = sugestedMove.row();
             columnSelected = sugestedMove.column();
 
@@ -206,6 +209,7 @@ public class ClientBot implements ClientInterface {
                     else {
                         System.out.println("BOT: I LOST!!!");
                     }
+                    showReplayWindow();
                     this.thread.interrupt();
                 }
                 else if(message.type() == ServerToClientMessage.Type.MOVE_MADE) {
@@ -223,6 +227,16 @@ public class ClientBot implements ClientInterface {
                 }
             }
             catch (Exception ex) {
+                System.err.println(ex);
+            }
+        }
+
+        private void showReplayWindow(){
+            //would you like to watch replay
+            try{
+                toServer.writeObject("NO");
+            }
+            catch(IOException ex){
                 System.err.println(ex);
             }
         }

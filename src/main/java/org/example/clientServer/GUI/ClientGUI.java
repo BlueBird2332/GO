@@ -5,8 +5,10 @@ import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.text.Font;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -20,12 +22,17 @@ import org.example.gameEngine.Board;
 import org.example.gameEngine.BoardGUI;
 import org.example.gameEngine.GameEngine;
 import org.example.models.Constants;
+import org.example.models.GameState;
 import org.example.models.Player;
+import org.example.sampleDatabase.DatabaseUtils;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class ClientGUI extends Application implements ClientInterface  {
     Socket socket;
@@ -61,6 +68,7 @@ public class ClientGUI extends Application implements ClientInterface  {
 
 
     public ClientGUI() {
+
     }
 
     @Override
@@ -77,9 +85,6 @@ public class ClientGUI extends Application implements ClientInterface  {
         this.primaryStage.setTitle("GO - player client");
         this.primaryStage.setScene(makeInitScene(this.primaryStage));
         this.primaryStage.show();
-
-
-
     }
     private Scene makeInitScene(Stage primaryStage) {
         /*TODO:
@@ -162,15 +167,17 @@ public class ClientGUI extends Application implements ClientInterface  {
         //  - W GUIBoardzie trzymaj kamienie, z setOnAction ztobionym - że się Row i Column wybiera, jeżeli my turn? i wysyła i supeancko
         //  - a jak odbierasz boarda, to ogarniasz z niego jak pokazać chyba
         this.rootPane = new BorderPane();
-        boardPane = board.showBoard(primaryStage.getWidth(), primaryStage.getHeight() - 60.0);
+        boardPane = board.showBoard(primaryStage.getWidth(), primaryStage.getHeight() - 70.0);
         this.rootPane.setCenter(boardPane);
 
-        HBox bottom = new HBox(20);
+        HBox bottom = new HBox(15);
         bottom.setAlignment(Pos.CENTER);
         bottom.setBackground(new Background(new BackgroundFill(Color.ROSYBROWN,null,null)));
         Button surrender = new Button("Poddaj sie");
+        surrender.setFont(new Font(15));
         surrender.setStyle("-fx-background-color: #f4a460; -fx-text-fill: black;");
         Button pass = new Button("Pas");
+        pass.setFont(new Font(15));
         pass.setStyle("-fx-background-color: #f4a460; -fx-text-fill: black;");
 
         surrender.setOnAction(event -> {
@@ -205,6 +212,12 @@ public class ClientGUI extends Application implements ClientInterface  {
         blackPoints = new Label("0");
         black.setBackground(new Background(new BackgroundFill(Color.ROSYBROWN,null,null)));
         blackPoints.setBackground(new Background(new BackgroundFill(Color.ROSYBROWN,null,null)));
+
+        white.setFont(new Font(15));
+        whitePoints.setFont(new Font(15));
+        topLabel.setFont(new Font(15));
+        black.setFont(new Font(15));
+        blackPoints.setFont(new Font(15));
 
 
         top.getChildren().addAll(white, whitePoints, topLabel, black, blackPoints);
@@ -405,7 +418,7 @@ public class ClientGUI extends Application implements ClientInterface  {
             System.out.println("Wysłany ruch i otrzymany board");
             board.printBoard();
             Platform.runLater(() -> {
-                boardPane = board.showBoard(this.primaryStage.getWidth(), this.primaryStage.getHeight()-60.0);
+                boardPane = board.showBoard(this.primaryStage.getWidth(), this.primaryStage.getHeight()-70.0);
                 this.rootPane.setCenter(boardPane);
                 topLabel.setText("Oczekiwanie na ruch przeciwnika");
                 whitePoints.setText(String.valueOf(feedback.gameState().whitesCaptured()));
@@ -420,6 +433,7 @@ public class ClientGUI extends Application implements ClientInterface  {
             board.okToMove();
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.initOwner(this.primaryStage);
                 alert.setTitle("Nieprawidłowy ruch");
                 alert.setHeaderText(null);
                 alert.setContentText("Wykonaj inny ruch");
@@ -463,6 +477,9 @@ public class ClientGUI extends Application implements ClientInterface  {
                         blackPoints.setText(String.valueOf(message.gameState().blacksCaptured()));
                     });
                 }
+                Platform.runLater(() -> {
+                    showReplayWindow(primaryStage);
+                });
             }
             else if(message.type() == ServerToClientMessage.Type.MOVE_MADE) {
                 Board receivedBoard = message.board();
@@ -474,7 +491,7 @@ public class ClientGUI extends Application implements ClientInterface  {
                 System.out.println("my black captured: "+ message.gameState().blacksCaptured());
                 board.okToMove();
                 Platform.runLater(() -> {
-                    boardPane = board.showBoard(this.primaryStage.getWidth(), this.primaryStage.getHeight()-60.0);
+                    boardPane = board.showBoard(this.primaryStage.getWidth(), this.primaryStage.getHeight()-70.0);
                     this.rootPane.setCenter(boardPane);
                     topLabel.setText("TWOJA KOLEJ");
                     whitePoints.setText(String.valueOf(message.gameState().whitesCaptured()));
@@ -495,6 +512,62 @@ public class ClientGUI extends Application implements ClientInterface  {
         }
         catch (Exception ex) {
             System.err.println(ex);
+        }
+    }
+
+    private void showReplayWindow(Stage primaryStage){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initOwner(primaryStage);
+        alert.setTitle("Replay?");
+        alert.setHeaderText("Czy chcesz zobaczyc replay gry?");
+        alert.setContentText("Wybierz jedną z opcji:");
+
+        ButtonType buttonTypeYes = new ButtonType("Tak");
+        ButtonType buttonTypeNo = new ButtonType("Nie");
+
+        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == buttonTypeYes) {
+            // Reakcja na odpowiedź "Tak"
+            try {
+                System.out.println("Chce przebieg gry");
+                toServer.writeObject("YES");
+                //System.out.println("Chce przebieg gry2");
+                List<GameState> game = new ArrayList<>();
+                //System.out.println("Chce przebieg gry3");
+                GameState state = (GameState) fromServer.readObject();
+                //System.out.println("Chce przebieg gry3");
+                while(state != null){
+                    game.add(state);
+                    state = (GameState) fromServer.readObject();
+                }
+                //System.out.println("Otrzymano przebieg gry");
+                for(GameState g : game){
+                    g.printCurrentState();
+                }
+                GameReplayerGUI replayer = new GameReplayerGUI(game);
+                replayer.start(this.primaryStage);
+
+
+            }
+            catch(IOException | ClassNotFoundException ex){
+                System.err.println(ex);
+            }
+            catch(Exception e){
+                System.err.println(e);
+            }
+
+        }
+        else {
+            // Reakcja na odpowiedź "Nie" lub zamknięcie okna
+            try{
+                toServer.writeObject("NO");
+            }
+            catch(IOException ex){
+                System.err.println(ex);
+            }
+
         }
     }
 

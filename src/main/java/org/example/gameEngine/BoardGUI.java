@@ -188,4 +188,54 @@ public class BoardGUI implements BoardInterface{
         System.out.println("row "+rowSelected + " solumn" + columnSelected + " enable" + moveEnable);
 
     }
+
+    public Pane showUselessBoard(double windowWidth, double windowHeight) {
+        Pane root = new Pane();
+        root.setBackground(new Background(new BackgroundFill(Color.SADDLEBROWN, CornerRadii.EMPTY, Insets.EMPTY)));
+        //windowHeight-=20;
+
+        int boardSize = this.getSize();
+        double tileSize = Math.min(windowWidth, windowHeight)/boardSize;
+        double widthOffset = (windowWidth - tileSize*boardSize)/2.0;
+        double heightOffset = (windowHeight - tileSize*boardSize)/2.0;
+        for (int i = 0; i < boardSize; i++) {
+            Line verticalLine = new Line(i * tileSize + tileSize/2 + widthOffset, 0 + heightOffset, i * tileSize + tileSize/2 + widthOffset, boardSize * tileSize + heightOffset);
+            Line horizontalLine = new Line(0 + widthOffset, i * tileSize + tileSize/2 + heightOffset, boardSize * tileSize + widthOffset, i * tileSize + tileSize/2  + heightOffset);
+
+            verticalLine.setStroke(Color.BLACK);
+            horizontalLine.setStroke(Color.BLACK);
+            verticalLine.setStrokeWidth(4.0);
+            horizontalLine.setStrokeWidth(4.0);
+
+            root.getChildren().addAll(verticalLine, horizontalLine);
+        }
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+
+
+                final int row = i;
+                final int col = j;
+
+                Circle stone = new Circle(tileSize / 4);
+                stone.setCenterX(j * tileSize + tileSize / 2 + widthOffset);
+                stone.setCenterY(i * tileSize + tileSize / 2 + heightOffset);
+                if(board.getCellContent(row, col).equals(Constants.EMPTY.value())){
+                    stone.setFill(Color.TRANSPARENT);
+                }
+                else if(board.getCellContent(row, col).equals(CellContents.VISITED.value())){
+                    stone.setFill(Color.TRANSPARENT);
+                }
+                else if(board.getCellContent(row, col).equals(Constants.BLACK.value())){
+                    stone.setFill(Color.BLACK);
+                }
+                else if(board.getCellContent(row, col).equals(Constants.WHITE.value())){
+                    stone.setFill(Color.WHITE);
+                }
+                root.getChildren().add(stone);
+            }
+        }
+
+        return root;
+
+    }
 }

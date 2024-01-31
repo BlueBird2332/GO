@@ -35,14 +35,8 @@ public class Bot {
 
 
     public Move findBestMove(int depth, Player player) {
-        if(!coninueToRunFlag){
-            return new Move(-1, -1,player);
-        }
-        //TODO:
-        // to tak średnio działa, w ogóle
         List<Move> availableMoves = MoveHelper.getAvailableMoves(gameEngine.board, player);
-        //Move bestMove = null;
-        Move bestMove = availableMoves.get(0);
+        Move bestMove = null;
         int bestValue = isMaximizingPlayer(player)? Integer.MIN_VALUE : Integer.MAX_VALUE;
         this.minMaxStrategy = minMaxStrategies.get(player);
 
@@ -57,23 +51,19 @@ public class Bot {
             gameEngine.setState(backUpState);
             // gameEngine.getCurrentState().printCurrentState();
 
+            //System.out.println(bestValue);
             if(minMaxStrategy.compare(bestValue, value)){
                 bestMove = move;
+                System.out.println(bestMove);
                 bestValue = value;
             }
-
-//            if (value > bestValue) {
-//                bestValue = value;
-//
-//            }
-
         }
 
         return bestMove;
     }
 
     private int minimax(int depth, Player player) {
-        //System.out.println("here");
+
         if (depth == 0) {
             return gameEngine.getState();
             //To do implement strategies
@@ -99,7 +89,7 @@ public class Bot {
                 gameEngine.makeMove(move);
                 int eval = minimax(depth - 1, Player.getOpponent(player));
                 gameEngine.setState(backUpState);
-                gameEngine.getCurrentState().printCurrentState();
+                //gameEngine.getCurrentState().printCurrentState();
                 minEval = Math.min(minEval, eval);
             }
             return minEval;

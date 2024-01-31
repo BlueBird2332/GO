@@ -7,21 +7,18 @@ import org.example.gameEngine.Board;
 import org.example.gameEngine.GameEngine;
 import org.example.models.GameState;
 import org.example.models.Player;
+import org.example.sampleDatabase.DatabaseUtils;
+import org.example.sampleDatabase.HibernateUtil;
 
 import java.io.*;
 import java.net.*;
+import java.util.List;
 
 /**
  *
  * @author aid
  */
 public class SessionForGUI implements SessionInterface {
-
-    //declaring constants
-    //public static int PLAYER1_BLACK = 1;
-    //public static int PLAYER2_WHITE = 2;
-    //public static int DRAW = 3;
-    //public static int CONTINUE = 4;
 
     //sockets
     private Socket firstPlayer;
@@ -32,10 +29,10 @@ public class SessionForGUI implements SessionInterface {
     ObjectInputStream fromPlayer2;
     ObjectOutputStream toPlayer2;
 
-    //Game
-    //TODO: zintegorawac z GameEngine
     private GameEngine gameEngine;
     private int passCounter = 0;
+    private DatabaseUtils dbUtil;
+    private long gameID;
 
     public SessionForGUI(Socket firstPlayer, ObjectOutputStream toPlayer1, ObjectInputStream fromPlayer1, Socket secondPlayer, ObjectOutputStream toPlayer2, Integer boardSize) {
         this.firstPlayer = firstPlayer;
@@ -44,11 +41,15 @@ public class SessionForGUI implements SessionInterface {
         this.secondPlayer = secondPlayer;
         this.toPlayer2 = toPlayer2;
         gameEngine = new GameEngine(boardSize);
+        dbUtil = new DatabaseUtils();
 
     }
 
     @Override
     public void run() {
+        HibernateUtil.getSessionFactory();
+        gameID = System.currentTimeMillis();
+        dbUtil.createTable(gameID);
         try {
 
             //fromPlayer1 = new ObjectInputStream(firstPlayer.getInputStream());
@@ -77,16 +78,17 @@ public class SessionForGUI implements SessionInterface {
 
                         if(move.type() == ClientToServerMessage.Type.SURRENDER) {
                             toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL,
-                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE)
+                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.NOONE)
                                     /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, null));
                             guardian = false;
                             toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED,
-                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE)
+                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.NOONE)
                                     /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, Player.WHITE));
                             toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED,
-                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE)
+                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.NOONE)
                                     /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, Player.WHITE));
                             gameFinished = true;
+                            dbUtil.addMove(gameID, new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.NOONE));
 
                         }
                         else if(move.type() == ClientToServerMessage.Type.PASS) {
@@ -96,21 +98,22 @@ public class SessionForGUI implements SessionInterface {
                             guardian = false;
                             passCounter++;
                             if(passCounter >=2) {
-                                //dTODO - what does that do?
                                 Player winner = gameEngine.winner();
                                 toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED,
-                                        new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE)
+                                        new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.NOONE)
                                         /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, winner));
                                 toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED,
-                                        new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE)
+                                        new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.NOONE)
                                         /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, winner));
                                 gameFinished = true;
+                                dbUtil.addMove(gameID,new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.NOONE));
 
                             }
                             else{
                                 toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.OTHER_PLAYER_PASSED,
                                         new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE)
                                         /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, Player.BLACK));
+                                dbUtil.addMove(gameID,new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE));
                             }
 
                         }
@@ -128,6 +131,7 @@ public class SessionForGUI implements SessionInterface {
                                             new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE)
                                             /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, Player.BLACK));
                                     guardian = false;
+                                    dbUtil.addMove(gameID,new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.WHITE));
                                 }
                                 else {
                                     toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_FAILURE, null, null));
@@ -160,16 +164,18 @@ public class SessionForGUI implements SessionInterface {
 
                         if(move.type() == ClientToServerMessage.Type.SURRENDER) {
                             toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_SUCCESFULL,
-                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK)
+                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.NOONE)
                                     /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, null));
                             guardian = false;
                             toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED,
-                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK)
+                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.NOONE)
                                     /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, Player.BLACK));
                             toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.GAME_FINISHED,
-                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK)
+                                    new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.NOONE)
                                     /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, Player.BLACK));
                             gameFinished = true;
+                            dbUtil.addMove(gameID, new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.NOONE));
+
 
                         }
                         else if(move.type() == ClientToServerMessage.Type.PASS) {
@@ -187,12 +193,14 @@ public class SessionForGUI implements SessionInterface {
                                         new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK)
                                         /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, winner));
                                 gameFinished = true;
+                                dbUtil.addMove(gameID,new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.NOONE));
 
                             }
                             else{
                                 toPlayer1.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.OTHER_PLAYER_PASSED,
                                         new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK)
                                         /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, Player.WHITE));
+                                dbUtil.addMove(gameID,new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK));
                             }
 
                         }
@@ -209,6 +217,7 @@ public class SessionForGUI implements SessionInterface {
                                             new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK)
                                             /*gameEngine.getBoard() / new Board(gameEngine.getBoardContents())*/, Player.WHITE));
                                     guardian = false;
+                                    dbUtil.addMove(gameID,new GameState(new Board(gameEngine.getBoardContents()), gameEngine.getWhitePoints(), gameEngine.getBlackPoints(), Player.BLACK));
                                 }
                                 else {
                                     toPlayer2.writeObject(new ServerToClientMessage(ServerToClientMessage.Type.MOVE_FAILURE, null, null));
@@ -227,8 +236,35 @@ public class SessionForGUI implements SessionInterface {
                     break;
                 }
             }
+            //Asks about replays
+            try{
+                List<GameState> gameReplay = dbUtil.getGame(gameID);
+                String replay1 = (String) fromPlayer1.readObject();
+                if(replay1.equals("YES")){
+                    for(GameState g : gameReplay){
+                        toPlayer1.writeObject(g);
+                    }
+                    toPlayer1.writeObject(null);
+
+                }
+                String replay2 = (String) fromPlayer2.readObject();
+                if(replay2.equals("YES")){
+                    for(GameState g : gameReplay){
+                        toPlayer2.writeObject(g);
+                    }
+                    toPlayer2.writeObject(null);
+                }
+            }
+            catch(ClassNotFoundException ex){
+
+                System.err.println(ex);
+            }
+
+
         } catch (IOException ex) {
             System.err.println(ex);
+        }finally {
+            HibernateUtil.shutdown();
         }
     }
 

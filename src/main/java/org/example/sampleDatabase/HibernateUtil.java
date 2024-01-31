@@ -1,5 +1,7 @@
 package org.example.sampleDatabase;
 
+import org.example.models.GameState;
+import org.example.models.GameStatus;
 import org.example.models.Move;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -19,8 +21,7 @@ public class HibernateUtil {
             // Create MetadataSources
             MetadataSources metadataSources = new MetadataSources(standardRegistry);
 
-            // Add annotated class (Move) to MetadataSources
-            metadataSources.addAnnotatedClass(Move.class);
+            metadataSources.addAnnotatedClass(GameStatus.class);
 
             // Create Metadata
             Metadata metadata = metadataSources.getMetadataBuilder().build();
