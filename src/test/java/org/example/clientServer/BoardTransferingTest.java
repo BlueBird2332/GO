@@ -1,4 +1,4 @@
-package org.example;
+package org.example.clientServer;
 
 import org.example.gameEngine.Board;
 import org.example.models.Constants;

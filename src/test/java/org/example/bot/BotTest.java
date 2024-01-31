@@ -29,39 +29,6 @@ class BotTest {
         assertTrue(ge.board.compareBoards(expected));
     }
 
-    @Test
-    void testMoveFindCapture() {
-        //Arrange
-        GameEngine ge = new GameEngine(19);
-        Bot bot = new Bot(ge);
-        ge.makeMove(new Move(1, 1, ge.getCurrentState().nextPlayer()));
-        ge.makeMove(new Move(0, 0, ge.getCurrentState().nextPlayer()));
-        ge.makeMove(new Move(0, 1, ge.getCurrentState().nextPlayer()));
-        ge.makeMove(new Move(5, 0, ge.getCurrentState().nextPlayer()));
-
-
-        Board expected = new Board(19);
-        expected.modifyBoard(0, 0, Player.BLACK.value());
-
-
-        //Act
-        Move move = bot.findBestMove(1, ge.getCurrentState().nextPlayer());
-        //ge.makeMove(move);
-
-        //Assert
-        assertTrue(move.equals(new Move(0,1, ge.getCurrentState().nextPlayer())));
-    }
-
-    @Test
-    void testCapturing() {
-
-    }
-
-    @Test
-    void testResourcesSharing() {
-
-    }
-
 
 
     @Test

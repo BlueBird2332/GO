@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4eec659d-c50b-47d9-b675-e3788c5d785d" name="Changes" comment="rfl: BD, UML&#10; - zobaczenie zapisu rozgrywki&#10; - diagramy">
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/bot/BotTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/gameEngine/CaptureHelperTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/gameEngine/GameEngineTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/gameEngine/MoveHelperTest.java" afterDir="false" />
+    <list default="true" id="4eec659d-c50b-47d9-b675-e3788c5d785d" name="Changes" comment="rfl: last tests commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ClientMain.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/BoardTransferingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/clientServer/BoardTransferingTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/bot/BotTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/bot/BotTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,28 +34,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Rafal-workshop&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/rafal/OneDrive/Pulpit/Studia/sem3/TP/GoGame/UMLDiagrams&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "Rafal-workshop",
+    "last_opened_file_path": "C:/Users/rafal/OneDrive/Pulpit/Studia/sem3/TP/GoGame/UMLDiagrams",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\rafal\OneDrive\Pulpit\Studia\sem3\TP\GoGame\src\test\java\org\example\models" />
+      <recent name="C:\Users\rafal\OneDrive\Pulpit\Studia\sem3\TP\GoGame\src\test\java\org\example\gameEngine" />
+      <recent name="C:\Users\rafal\OneDrive\Pulpit\Studia\sem3\TP\GoGame\src\test\java\org\example\bot" />
       <recent name="C:\Users\rafal\OneDrive\Pulpit\Studia\sem3\TP\GoGame\src\main\java\org\example\sampleDatabase" />
       <recent name="C:\Users\rafal\OneDrive\Pulpit\Studia\sem3\TP\GoGame\UMLDiagrams" />
-      <recent name="C:\Users\rafal\OneDrive\Pulpit\Studia\sem3\TP\GoGame\src\main\java\org\example\gameEngine" />
-      <recent name="C:\Users\rafal\OneDrive\Pulpit\Studia\sem3\TP\GoGame\src\main\java\org\example\models" />
-      <recent name="C:\Users\rafal\OneDrive\Pulpit\Studia\sem3\TP\GoGame\src\main\java\org\example\bot" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.example.clientServer" />
     </key>
   </component>
   <component name="RunManager" selected="Application.ClientGUI with fx">
@@ -81,7 +84,7 @@
       <module name="GoGame" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.*" />
+          <option name="PATTERN" value="org.example.clientServer.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -112,7 +115,7 @@
       <workItem from="1706615520137" duration="19526000" />
       <workItem from="1706651624011" duration="15349000" />
       <workItem from="1706667035483" duration="1825000" />
-      <workItem from="1706688771636" duration="377000" />
+      <workItem from="1706688771636" duration="1706000" />
     </task>
     <task id="LOCAL-00001" summary="rfl: merged parts&#10; - capturing full of bugs&#10; - some minor changes to glue old and new versions together">
       <option name="closed" value="true" />
@@ -170,7 +173,15 @@
       <option name="project" value="LOCAL" />
       <updated>1706668518744</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="rfl: last tests commit">
+      <option name="closed" value="true" />
+      <created>1706689257154</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1706689257154</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -184,6 +195,7 @@
     <MESSAGE value="rfl: GUI c.d.&#10; - improved visuals again&#10; - added UML Diagram" />
     <MESSAGE value="rfl: podłączenie bazy do gui" />
     <MESSAGE value="rfl: BD, UML&#10; - zobaczenie zapisu rozgrywki&#10; - diagramy" />
-    <option name="LAST_COMMIT_MESSAGE" value="rfl: BD, UML&#10; - zobaczenie zapisu rozgrywki&#10; - diagramy" />
+    <MESSAGE value="rfl: last tests commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="rfl: last tests commit" />
   </component>
 </project>
