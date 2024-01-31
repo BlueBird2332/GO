@@ -109,7 +109,7 @@ public class GameReplayerGUI extends Application {
         index = 0;
         Timeline timeline = new Timeline(
                 new KeyFrame(
-                        Duration.seconds(3),
+                        Duration.seconds(2),
                         new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {

@@ -4,26 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4eec659d-c50b-47d9-b675-e3788c5d785d" name="Changes" comment="rfl: GUI c.d.&#10; - improved visuals again&#10; - added UML Diagram">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/GameReplayerGUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/sampleDatabase/DatabaseUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/sampleDatabase/IDataBaseUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/sampleDatabase/StatusStateConverter.java" afterDir="false" />
+    <list default="true" id="4eec659d-c50b-47d9-b675-e3788c5d785d" name="Changes" comment="rfl: podłączenie bazy do gui">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/bot/Bot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/bot/Bot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/bot/ClientBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/bot/ClientBot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/ClientGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/ClientGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/GameReplayerGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/GameReplayerGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/SessionForGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/SessionForGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/BoardGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/BoardGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/CaptureHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/CaptureHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/GameEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/models/GameStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/models/GameStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/models/Group.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/models/Group.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/models/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/models/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/sampleDatabase/HibernateUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/sampleDatabase/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/sampleDatabase/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +40,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;Rafal-workshop&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/rafal/OneDrive/Pulpit/Studia/sem3/TP/GoGame&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/rafal/OneDrive/Pulpit/Studia/sem3/TP/GoGame/UMLDiagrams&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -123,7 +108,8 @@
       <updated>1706542553705</updated>
       <workItem from="1706542554671" duration="23375000" />
       <workItem from="1706615520137" duration="19526000" />
-      <workItem from="1706651624011" duration="14353000" />
+      <workItem from="1706651624011" duration="15349000" />
+      <workItem from="1706667035483" duration="1016000" />
     </task>
     <task id="LOCAL-00001" summary="rfl: merged parts&#10; - capturing full of bugs&#10; - some minor changes to glue old and new versions together">
       <option name="closed" value="true" />
@@ -165,7 +151,15 @@
       <option name="project" value="LOCAL" />
       <updated>1706651741078</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="rfl: podłączenie bazy do gui">
+      <option name="closed" value="true" />
+      <created>1706666338761</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1706666338761</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -177,6 +171,7 @@
     <MESSAGE value="rfl: bot &amp; GUI c.d.&#10; - bugs fixed - bot, capturing, suicides" />
     <MESSAGE value="rfl: GUI c.d.&#10; - improved visuals&#10; - changed protocols" />
     <MESSAGE value="rfl: GUI c.d.&#10; - improved visuals again&#10; - added UML Diagram" />
-    <option name="LAST_COMMIT_MESSAGE" value="rfl: GUI c.d.&#10; - improved visuals again&#10; - added UML Diagram" />
+    <MESSAGE value="rfl: podłączenie bazy do gui" />
+    <option name="LAST_COMMIT_MESSAGE" value="rfl: podłączenie bazy do gui" />
   </component>
 </project>

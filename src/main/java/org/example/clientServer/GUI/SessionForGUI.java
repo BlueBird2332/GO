@@ -19,7 +19,7 @@ import java.util.List;
  * @author aid
  */
 public class SessionForGUI implements SessionInterface {
-
+//Mediator dla clientów
     //sockets
     private Socket firstPlayer;
     private Socket secondPlayer;

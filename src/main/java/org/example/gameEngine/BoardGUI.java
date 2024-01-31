@@ -10,7 +10,7 @@ import org.example.models.Constants;
 import org.example.models.Stone;
 
 public class BoardGUI implements BoardInterface{
-
+    //Dekorator na Board
     private Board board;
     private boolean moveEnable=true;
     private int rowSelected=-3;
