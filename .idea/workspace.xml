@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4eec659d-c50b-47d9-b675-e3788c5d785d" name="Changes" comment="rfl: podłączenie bazy do gui">
+    <list default="true" id="4eec659d-c50b-47d9-b675-e3788c5d785d" name="Changes" comment="rfl: BD, UML&#10; - zobaczenie zapisu rozgrywki&#10; - diagramy">
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/bot/BotTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/gameEngine/CaptureHelperTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/gameEngine/GameEngineTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/gameEngine/MoveHelperTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/GameReplayerGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/GameReplayerGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/SessionForGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/clientServer/GUI/SessionForGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/BoardGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gameEngine/BoardGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,7 +111,8 @@
       <workItem from="1706542554671" duration="23375000" />
       <workItem from="1706615520137" duration="19526000" />
       <workItem from="1706651624011" duration="15349000" />
-      <workItem from="1706667035483" duration="1016000" />
+      <workItem from="1706667035483" duration="1825000" />
+      <workItem from="1706688771636" duration="377000" />
     </task>
     <task id="LOCAL-00001" summary="rfl: merged parts&#10; - capturing full of bugs&#10; - some minor changes to glue old and new versions together">
       <option name="closed" value="true" />
@@ -159,7 +162,15 @@
       <option name="project" value="LOCAL" />
       <updated>1706666338761</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="rfl: BD, UML&#10; - zobaczenie zapisu rozgrywki&#10; - diagramy">
+      <option name="closed" value="true" />
+      <created>1706668518743</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1706668518744</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -172,6 +183,7 @@
     <MESSAGE value="rfl: GUI c.d.&#10; - improved visuals&#10; - changed protocols" />
     <MESSAGE value="rfl: GUI c.d.&#10; - improved visuals again&#10; - added UML Diagram" />
     <MESSAGE value="rfl: podłączenie bazy do gui" />
-    <option name="LAST_COMMIT_MESSAGE" value="rfl: podłączenie bazy do gui" />
+    <MESSAGE value="rfl: BD, UML&#10; - zobaczenie zapisu rozgrywki&#10; - diagramy" />
+    <option name="LAST_COMMIT_MESSAGE" value="rfl: BD, UML&#10; - zobaczenie zapisu rozgrywki&#10; - diagramy" />
   </component>
 </project>
